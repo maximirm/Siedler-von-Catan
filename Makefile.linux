@@ -1,0 +1,17 @@
+EXECUTABLE = Beleg
+CC = g++
+CPPFLAGS = -O3 -Iglm/ -DGLEW_STATIC -DFREEGLUT_STATIC -Ilinux -I/usr/include/X11R6/include  -std=c++11 
+DEPS = glm/glm.hpp  /glm/gtc/rotate_vector.hpp  /glm/gtc/matrix_inverse.hpp GLIncludes.hpp Log.hpp Window.hpp Context.hpp TriangleMesh.hpp GLSL.hpp Texture.hpp
+OBJ = Config.o Window.o Keyboard.o TriangleMesh.o GLSL.o Texture.o Beleg.o
+LIBS = -L/usr/lib64 -lGL ./linux/libglut.a -lpthread -lX11 -lXi ./linux/libGLEW.a 
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CPPFLAGS)
+
+$(EXECUTABLE): $(OBJ)
+	$(CC) -o $@ $^ $(CPPFLAGS) $(LIBS)
+
+.PHONY: clean
+
+clean:
+	rm -f *.o *~ $(EXECUTABLE)		
