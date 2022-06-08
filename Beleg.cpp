@@ -26,11 +26,41 @@
 using namespace glm;
 using namespace std;
 
+
+ OpenGLConfiguration config(glm::uvec2(2, 1),
+			    OpenGLConfiguration::Profile::COMPATIBILITY,
+			    (Window::DOUBLE | Window::DEPTH | Window::RGB | Window::MULTISAMPLE),
+			    8,
+			    glm::uvec2(50, 50),
+			    glm::uvec2(512, 768),
+			    "Computer Graphics - Beleg");
+
+ OpenGLConfiguration configLeft(config,
+				glm::uvec2(0, 0),
+				glm::uvec2((config.size.x)/2, config.size.y/3),
+				"");
+
+OpenGLConfiguration configRight(config,
+				glm::uvec2((config.size.x)/2, 0),
+				glm::uvec2((config.size.x)/2, config.size.y/3),
+				"");
+
+OpenGLConfiguration configMain(config,
+			       glm::uvec2(0, config.size.y/3),
+			       glm::uvec2(config.size.x, 2*(config.size.y/3)),
+			       "");
+
+
 // field of view
 GLfloat Beleg::Main::fov= 45.0;
 GLfloat Beleg::Main::cameraZ= 3;
 
 mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelMatrix(1);
+
+// ML schnipp
+TriangleMesh Beleg::Main::mesh;
+glsl::Shader Beleg::Main::diffuseShader;
+// ML schnapp
 
 LightSource Beleg::Main::lightSource={
     // position
@@ -45,6 +75,23 @@ LightSource Beleg::Main::lightSource={
 
 void Beleg::Main::init(){
   
+  // ML schnipp
+  mesh.setWinding(TriangleMesh::CW);
+  mesh.load("meshes/icosahedron.obj");
+
+  const std::string version= "#version 120\n";
+  
+  diffuseShader.addVertexShader(version);
+  diffuseShader.loadVertexShader("shaders/diffuse.vert");
+  diffuseShader.compileVertexShader();
+  diffuseShader.addFragmentShader(version);
+  diffuseShader.loadFragmentShader("shaders/diffuse.frag");
+  diffuseShader.compileFragmentShader();
+  diffuseShader.bindVertexAttrib("position", TriangleMesh::attribPosition);
+  diffuseShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+  diffuseShader.link();
+
+  //ML schnapp
 }
 
 // adjust to new window size
@@ -81,6 +128,15 @@ void Beleg::Main::display(void){
 
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // ML schnipp
+  diffuseShader.bind();
+  diffuseShader.setUniform("transformation", projectionMatrix*viewMatrix*modelMatrix);
+  diffuseShader.setUniform("color", vec3(1,1,1));
+  diffuseShader.setUniform("lightPosition", inverse(modelMatrix)*lightSource.position);
+  mesh.draw();
+  diffuseShader.unbind();
+  // ML schnapp
   
   // display back buffer
   window->swapBuffers();

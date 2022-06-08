@@ -18,31 +18,15 @@
 
 #include "Context.hpp"
 #include "Application.hpp"
-#include "Material.h"
+#include "TriangleMesh.hpp"
+#include "Texture.hpp"
 #include "LightSource.h"
+#include "GLSL.hpp"
 
- OpenGLConfiguration config(glm::uvec2(2, 1),
-			    OpenGLConfiguration::Profile::COMPATIBILITY,
-			    (Window::DOUBLE | Window::DEPTH | Window::RGB | Window::MULTISAMPLE),
-			    8,
-			    glm::uvec2(50, 50),
-			    glm::uvec2(512, 768),
-			    "Computer Graphics - Beleg");
-
- OpenGLConfiguration configLeft(config,
-				glm::uvec2(0, 0),
-				glm::uvec2((config.size.x)/2, config.size.y/3),
-				"");
-
-OpenGLConfiguration configRight(config,
-				glm::uvec2((config.size.x)/2, 0),
-				glm::uvec2((config.size.x)/2, config.size.y/3),
-				"");
-
-OpenGLConfiguration configMain(config,
-			       glm::uvec2(0, config.size.y/3),
-			       glm::uvec2(config.size.x, 2*(config.size.y/3)),
-			       "");
+extern OpenGLConfiguration config;
+extern OpenGLConfiguration configLeft;
+extern OpenGLConfiguration configRight;
+extern OpenGLConfiguration configMain;
 
 class Beleg : public OpenGLApplication<config>{
 
@@ -59,8 +43,25 @@ public:
   
   // keyboard callback
   static void keyPressed();
+
+private:
+  
+  class Island{
+
+  private:
+    glm::vec3 position;
+    Texture texture;
+    
+  public:
+    Island(std::string texture);
+    void display(glm::mat4 modelMatrix);
+  };
+
+public:
   
   class Main : public OpenGLApplication<configMain>{
+
+    friend class Beleg::Island;
     
   public:
     
@@ -111,6 +112,11 @@ public:
     struct Menu{
       enum Item{QUIT};
     };
+    
+    // ML schnipp
+    static TriangleMesh mesh;
+    static glsl::Shader diffuseShader;
+    // ML schnapp
   };
   
   class Left : public OpenGLApplication<configLeft>{
@@ -150,5 +156,5 @@ public:
 
   private:
   
-   static void handleKeyboardInput(unsigned int key);
+   static void handleKeyboardInput(unsigned int key);  
 };

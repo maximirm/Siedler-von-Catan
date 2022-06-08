@@ -97,6 +97,8 @@ void TriangleMesh::load(const std::string& fileName, bool unitize, bool center){
   uploadBuffers();  
 }
 
+
+
 void TriangleMesh::setWinding(PolygonWinding winding){
   this->winding= winding;
 }

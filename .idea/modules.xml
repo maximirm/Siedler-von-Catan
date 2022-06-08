@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/cg_beleg_multi-window.iml" filepath="$PROJECT_DIR$/.idea/cg_beleg_multi-window.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Siedler-von-Catan.iml" filepath="$PROJECT_DIR$/.idea/Siedler-von-Catan.iml" />
     </modules>
   </component>
 </project>

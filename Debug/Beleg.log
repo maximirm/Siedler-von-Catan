@@ -1,0 +1,3 @@
+﻿LINK : warning LNK4098: Standardbibliothek "LIBCMT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
+Island.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol ""public: __thiscall Texture::Texture(void)" (??0Texture@@QAE@XZ)" in Funktion ""public: __thiscall Beleg::Island::Island(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0Island@Beleg@@QAE@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)".
+C:\Users\Meist\WorkWork\CProjects\Beleg\Siedler-von-Catan\Debug\Beleg.exe : fatal error LNK1120: 1 nicht aufgelöste Externe

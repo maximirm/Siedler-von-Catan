@@ -18,6 +18,7 @@
     <ClInclude Include="GLIncludes.hpp" />
     <ClInclude Include="GLSL.hpp" />
     <ClInclude Include="Input.hpp" />
+    <ClInclude Include="Island.h" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Mouse.hpp" />
@@ -40,6 +41,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Island.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -53,12 +55,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

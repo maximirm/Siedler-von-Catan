@@ -48,6 +48,7 @@
     <ClInclude Include="Config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Island.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Context.cpp">
@@ -77,5 +78,6 @@
     <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Island.cpp" />
   </ItemGroup>
 </Project>
