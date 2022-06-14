@@ -18,7 +18,6 @@
     <ClInclude Include="GLIncludes.hpp" />
     <ClInclude Include="GLSL.hpp" />
     <ClInclude Include="Input.hpp" />
-    <ClInclude Include="Island.h" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Mouse.hpp" />

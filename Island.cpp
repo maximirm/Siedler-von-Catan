@@ -4,9 +4,12 @@ using namespace glm;
 using namespace std;
 
 // TODO load texture
-Beleg::Island::Island(string texture){
+
+Beleg::Island::Island(std::string texture, glm::vec3 position) {
     this->texture.load(texture);
+    this->position = position;
 }
+
 
 //TODO: bind texture and use texturing shader instead of diffuse shader
 void Beleg::Island::display(glm::mat4 modelMatrix) {

@@ -8,13 +8,13 @@ class Island
 	
 private:
 	glm::vec3 position;
-
 	Texture texture;
 
 public:
-	void draw(glm::mat4 modelMatrix);
+	void display(glm::mat4 modelMatrix);
 
 	Island(std::string texture, glm::vec3 position);
+
 
 };
 

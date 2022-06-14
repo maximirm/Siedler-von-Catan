@@ -61,6 +61,7 @@ mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelM
 
 // ML schnipp
 TriangleMesh Beleg::Main::mesh;
+Beleg::Island *Beleg::Main::centerIsland;
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
 
@@ -105,7 +106,8 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
   texturingShader.link();
 
-  Island island1("./textures/earth2.ppm");
+  centerIsland = new Island("./textures/earth2.ppm", glm::vec3(0));
+
   
 
 
@@ -147,12 +149,14 @@ void Beleg::Main::display(void){
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  centerIsland->display(glm::mat4(1));
+
   // ML schnipp
   diffuseShader.bind();
   diffuseShader.setUniform("transformation", projectionMatrix*viewMatrix*modelMatrix);
   diffuseShader.setUniform("color", vec3(1,1,1));
   diffuseShader.setUniform("lightPosition", inverse(modelMatrix)*lightSource.position);
-  mesh.draw();
+  //mesh.draw();
   diffuseShader.unbind();
   // ML schnapp
   

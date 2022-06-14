@@ -44,17 +44,25 @@ public:
   // keyboard callback
   static void keyPressed();
 
-private:
+
+protected:
+    class Main;
   
   class Island{
+
+      friend class Beleg::Main;
+     
 
   private:
     glm::vec3 position;
     Texture texture;
+  
     
   public:
-    Island(std::string texture);
+    Island(std::string texture, glm::vec3 position);
     void display(glm::mat4 modelMatrix);
+    
+    
   };
 
 public:
@@ -116,6 +124,8 @@ public:
     // ML schnipp
     static TriangleMesh mesh;
     static glsl::Shader diffuseShader, texturingShader;
+    static Island *centerIsland;
+   
     
     // ML schnapp
   };
