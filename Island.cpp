@@ -1,4 +1,5 @@
 #include "Beleg.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace glm;
 using namespace std;
@@ -13,7 +14,8 @@ Beleg::Island::Island(std::string texture, glm::vec3 position) {
 
 //TODO: bind texture and use texturing shader instead of diffuse shader
 void Beleg::Island::display(glm::mat4 modelMatrix) {
-	
+	 
+    modelMatrix = glm::translate(modelMatrix, this->position);
     Main::texturingShader.bind();
     Main::texturingShader.setUniform("modelViewProjectionMatrix", Main::projectionMatrix * Main::viewMatrix * modelMatrix);
     Main::texturingShader.setUniform("lighting", true);

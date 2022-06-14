@@ -124,7 +124,8 @@ public:
     // ML schnipp
     static TriangleMesh mesh;
     static glsl::Shader diffuseShader, texturingShader;
-    static Island *centerIsland;
+    static Island *centerIsland, *leftIsland;
+    
    
     
     // ML schnapp

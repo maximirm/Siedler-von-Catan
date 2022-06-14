@@ -55,13 +55,14 @@ OpenGLConfiguration configMain(config,
 
 // field of view
 GLfloat Beleg::Main::fov= 45.0;
-GLfloat Beleg::Main::cameraZ= 3;
+GLfloat Beleg::Main::cameraZ= 6;
 
 mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelMatrix(1);
 
 // ML schnipp
 TriangleMesh Beleg::Main::mesh;
 Beleg::Island *Beleg::Main::centerIsland;
+Beleg::Island* Beleg::Main::leftIsland;
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
 
@@ -82,7 +83,7 @@ void Beleg::Main::init(){
   
   // ML schnipp
   mesh.setWinding(TriangleMesh::CW);
-  mesh.load("meshes/icosahedron.obj");
+  mesh.load("meshes/platform.obj");
 
   const std::string version= "#version 120\n";
 
@@ -107,6 +108,7 @@ void Beleg::Main::init(){
   texturingShader.link();
 
   centerIsland = new Island("./textures/earth2.ppm", glm::vec3(0));
+  leftIsland = new Island("./textures/earth2.ppm", glm::vec3(-1,0,0));
 
   
 
@@ -148,8 +150,9 @@ void Beleg::Main::display(void){
 
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-  centerIsland->display(glm::mat4(1));
+  glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(90.0f), glm::vec3(1,0,0));
+  centerIsland->display(matrix);
+  leftIsland->display(matrix);
 
   // ML schnipp
   diffuseShader.bind();
