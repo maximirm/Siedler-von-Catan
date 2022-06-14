@@ -13,6 +13,7 @@
 #include "Beleg.hpp"
 #include "Context.hpp"
 #include "Input.hpp"
+#include "Texture.hpp"
 
 #include "LightSource.h"
 #include "Material.h"
@@ -25,6 +26,7 @@
 // might cause name collisions
 using namespace glm;
 using namespace std;
+
 
 
  OpenGLConfiguration config(glm::uvec2(2, 1),
@@ -59,7 +61,9 @@ mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelM
 
 // ML schnipp
 TriangleMesh Beleg::Main::mesh;
-glsl::Shader Beleg::Main::diffuseShader;
+glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
+
+
 // ML schnapp
 
 LightSource Beleg::Main::lightSource={
@@ -80,7 +84,8 @@ void Beleg::Main::init(){
   mesh.load("meshes/icosahedron.obj");
 
   const std::string version= "#version 120\n";
-  
+
+
   diffuseShader.addVertexShader(version);
   diffuseShader.loadVertexShader("shaders/diffuse.vert");
   diffuseShader.compileVertexShader();
@@ -90,6 +95,19 @@ void Beleg::Main::init(){
   diffuseShader.bindVertexAttrib("position", TriangleMesh::attribPosition);
   diffuseShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
   diffuseShader.link();
+
+  texturingShader.loadVertexShader("shaders/texturing.vert");
+  texturingShader.compileVertexShader();
+  texturingShader.loadFragmentShader("shaders/texturing.frag");
+  texturingShader.compileFragmentShader();
+  texturingShader.bindVertexAttrib("position", TriangleMesh::attribPosition);
+  texturingShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+  texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
+  texturingShader.link();
+
+  Island island1("./textures/earth2.ppm");
+  
+
 
   //ML schnapp
 }

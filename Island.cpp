@@ -5,16 +5,20 @@ using namespace std;
 
 // TODO load texture
 Beleg::Island::Island(string texture){
-
+    this->texture.load(texture);
 }
 
 //TODO: bind texture and use texturing shader instead of diffuse shader
 void Beleg::Island::display(glm::mat4 modelMatrix) {
 	
-  Main::diffuseShader.bind();
-  Main::diffuseShader.setUniform("transformation", Main::projectionMatrix * Main::viewMatrix * modelMatrix);
-  Main::diffuseShader.setUniform("color", vec3(1, 1, 1));
-  Main::diffuseShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
-  Main::mesh.draw();
-  Main::diffuseShader.unbind();
+    Main::texturingShader.bind();
+    Main::texturingShader.setUniform("modelViewProjectionMatrix", Main::projectionMatrix * Main::viewMatrix * modelMatrix);
+    Main::texturingShader.setUniform("lighting", true);
+    Main::texturingShader.setUniform("texturing", true);
+    Main::texturingShader.setUniform("texture", texture.id());
+    Main::texturingShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
+    this->texture.bind();
+    Main::mesh.draw();
+    this->texture.unbind();
+    Main::texturingShader.unbind();
 }

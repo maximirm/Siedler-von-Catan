@@ -115,7 +115,8 @@ public:
     
     // ML schnipp
     static TriangleMesh mesh;
-    static glsl::Shader diffuseShader;
+    static glsl::Shader diffuseShader, texturingShader;
+    
     // ML schnapp
   };
   

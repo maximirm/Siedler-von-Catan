@@ -22,6 +22,7 @@
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="Log.hpp" />
     <ClInclude Include="Mouse.hpp" />
+    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="TriangleMesh.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
@@ -41,8 +42,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Island.cpp" />
+    <ClCompile Include="Island.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TriangleMesh.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
