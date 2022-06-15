@@ -59,7 +59,7 @@ protected:
   
     
   public:
-    Island(std::string texture, glm::vec3 position);
+    Island(std::string texture, glm::vec3 position, std::string mesh);
     void display(glm::mat4 modelMatrix);
     
     
@@ -124,7 +124,7 @@ public:
     // ML schnipp
     static TriangleMesh mesh;
     static glsl::Shader diffuseShader, texturingShader;
-    static Island *centerIsland, *leftIsland;
+    static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     
    
     

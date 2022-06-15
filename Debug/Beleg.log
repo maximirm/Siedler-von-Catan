@@ -1,3 +1,5 @@
-﻿LINK : warning LNK4098: Standardbibliothek "LIBCMT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
-Island.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol ""public: __thiscall Texture::Texture(void)" (??0Texture@@QAE@XZ)" in Funktion ""public: __thiscall Beleg::Island::Island(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (??0Island@Beleg@@QAE@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)".
-C:\Users\Meist\WorkWork\CProjects\Beleg\Siedler-von-Catan\Debug\Beleg.exe : fatal error LNK1120: 1 nicht aufgelöste Externe
+﻿  Beleg.cpp
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(70,14): warning C4240: Nicht dem Standard entsprechende Erweiterung: Zugriff auf "Beleg::Main" nun als "public" definiert, wurde zuvor als "protected" definiert
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(49): message : Siehe Deklaration von "Beleg::Main"
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.cpp(239,34): warning C4305: "Argument": Verkürzung von "double" in "GLclampf"
+  Beleg.vcxproj -> C:\Users\Meist\WorkWork\CProjects\Beleg\Debug\Beleg.exe

@@ -2,10 +2,14 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\Meist\WorkWork\CProjects\Beleg\Siedler-von-Catan\Debug\Beleg.exe</FullPath>
+      <FullPath>C:\Users\Meist\WorkWork\CProjects\Beleg\Debug\Beleg.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\Meist\WorkWork\CProjects\Beleg\Island.cpp</FullPath>
+    </ContentFile>
+  </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

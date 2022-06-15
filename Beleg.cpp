@@ -62,7 +62,13 @@ mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelM
 // ML schnipp
 TriangleMesh Beleg::Main::mesh;
 Beleg::Island *Beleg::Main::centerIsland;
+Beleg::Island* Beleg::Main::bottomLeftIsland;
+Beleg::Island* Beleg::Main::bottomRightIsland;
 Beleg::Island* Beleg::Main::leftIsland;
+Beleg::Island* Beleg::Main::topLeftIsland;
+Beleg::Island* Beleg::Main::topRightIsland;
+Beleg::Island* Beleg::Main::rightIsland;
+
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
 
@@ -82,8 +88,9 @@ LightSource Beleg::Main::lightSource={
 void Beleg::Main::init(){
   
   // ML schnipp
-  mesh.setWinding(TriangleMesh::CW);
-  mesh.load("meshes/platform.obj");
+  //mesh.setWinding(TriangleMesh::CW);
+  //mesh.load("meshes/platform.obj");
+
 
   const std::string version= "#version 120\n";
 
@@ -107,11 +114,14 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
   texturingShader.link();
 
-  centerIsland = new Island("./textures/earth2.ppm", glm::vec3(0));
-  leftIsland = new Island("./textures/earth2.ppm", glm::vec3(-1,0,0));
-
+  centerIsland = new Island("./textures/checker.ppm", glm::vec3(0,0,0), "meshes/platform.obj");
+  bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2,0,-0.7), "meshes/platform.obj");
+  bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), "meshes/platform.obj");
+  topLeftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, -0.7), "meshes/platform.obj");
+  topRightIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, 0.7), "meshes/platform.obj");
+  rightIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(0, 0, 1.4), "meshes/platform.obj");
+  leftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(0, 0, -1.4), "meshes/platform.obj");
   
-
 
   //ML schnapp
 }
@@ -152,7 +162,13 @@ void Beleg::Main::display(void){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(90.0f), glm::vec3(1,0,0));
   centerIsland->display(matrix);
+  bottomLeftIsland->display(matrix);
+  bottomRightIsland->display(matrix);
+  topLeftIsland->display(matrix);
+  topRightIsland->display(matrix);
   leftIsland->display(matrix);
+  rightIsland->display(matrix);
+
 
   // ML schnipp
   diffuseShader.bind();
@@ -273,6 +289,8 @@ void Beleg::handleKeyboardInput(unsigned int key){
   case 'q':
   case 'Q':
     exit(0);
+  case 't':
+ 
 
   default:
     break;

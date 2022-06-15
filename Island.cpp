@@ -6,9 +6,11 @@ using namespace std;
 
 // TODO load texture
 
-Beleg::Island::Island(std::string texture, glm::vec3 position) {
+Beleg::Island::Island(std::string texture, glm::vec3 position, std::string mesh) {
     this->texture.load(texture);
     this->position = position;
+    Beleg::Main::mesh.setWinding(TriangleMesh::CW);
+    Beleg::Main::mesh.load(mesh);
 }
 
 
