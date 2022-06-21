@@ -1,5 +1,5 @@
 ﻿  Beleg.cpp
-C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(70,14): warning C4240: Nicht dem Standard entsprechende Erweiterung: Zugriff auf "Beleg::Main" nun als "public" definiert, wurde zuvor als "protected" definiert
-C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(49): message : Siehe Deklaration von "Beleg::Main"
-C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.cpp(239,34): warning C4305: "Argument": Verkürzung von "double" in "GLclampf"
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(75,14): warning C4240: Nicht dem Standard entsprechende Erweiterung: Zugriff auf "Beleg::Main" nun als "public" definiert, wurde zuvor als "protected" definiert
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.hpp(53): message : Siehe Deklaration von "Beleg::Main"
+C:\Users\Meist\WorkWork\CProjects\Beleg\Beleg.cpp(244,34): warning C4305: "Argument": Verkürzung von "double" in "GLclampf"
   Beleg.vcxproj -> C:\Users\Meist\WorkWork\CProjects\Beleg\Debug\Beleg.exe

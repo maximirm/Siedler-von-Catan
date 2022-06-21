@@ -9,8 +9,8 @@ using namespace std;
 Beleg::Island::Island(std::string texture, glm::vec3 position, std::string mesh) {
     this->texture.load(texture);
     this->position = position;
-    Beleg::Main::mesh.setWinding(TriangleMesh::CW);
-    Beleg::Main::mesh.load(mesh);
+    Beleg::Main::islandMesh.setWinding(TriangleMesh::CW);
+    Beleg::Main::islandMesh.load(mesh);
 }
 
 
@@ -25,7 +25,7 @@ void Beleg::Island::display(glm::mat4 modelMatrix) {
     Main::texturingShader.setUniform("texture", texture.id());
     Main::texturingShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
     this->texture.bind();
-    Main::mesh.draw();
+    Main::islandMesh.draw();
     this->texture.unbind();
     Main::texturingShader.unbind();
 }

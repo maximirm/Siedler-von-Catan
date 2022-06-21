@@ -55,12 +55,15 @@ OpenGLConfiguration configMain(config,
 
 // field of view
 GLfloat Beleg::Main::fov= 45.0;
-GLfloat Beleg::Main::cameraZ= 6;
+GLfloat Beleg::cameraZ= 6;
+GLfloat Beleg::cameraX = 0;
+GLfloat Beleg::cameraY = 1;
 
 mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelMatrix(1);
+mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
 
 // ML schnipp
-TriangleMesh Beleg::Main::mesh;
+TriangleMesh Beleg::Main::islandMesh;
 Beleg::Island *Beleg::Main::centerIsland;
 Beleg::Island* Beleg::Main::bottomLeftIsland;
 Beleg::Island* Beleg::Main::bottomRightIsland;
@@ -114,13 +117,14 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
   texturingShader.link();
 
-  centerIsland = new Island("./textures/checker.ppm", glm::vec3(0,0,0), "meshes/platform.obj");
+  centerIsland = new Island("./textures/grass.ppm", glm::vec3(0,0,0), "meshes/platform.obj");
   bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2,0,-0.7), "meshes/platform.obj");
   bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), "meshes/platform.obj");
   topLeftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, -0.7), "meshes/platform.obj");
-  topRightIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, 0.7), "meshes/platform.obj");
-  rightIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(0, 0, 1.4), "meshes/platform.obj");
-  leftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(0, 0, -1.4), "meshes/platform.obj");
+  topRightIsland = new Island("./textures/sand.ppm", glm::vec3(1.2, 0, 0.7), "meshes/platform.obj");
+  rightIsland = new Island("./textures/cobblestone.ppm", glm::vec3(0, 0, 1.4), "meshes/platform.obj");
+  leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), "meshes/platform.obj");
+  
   
 
   //ML schnapp
@@ -140,7 +144,7 @@ void Beleg::Main::reshape(){
 
 void Beleg::Main::computeViewMatrix(void){
 
-  viewMatrix= glm::lookAt(vec3(0,0,cameraZ), vec3(0), vec3(0,1,0));
+  viewMatrix= glm::lookAt(vec3(rotationMatrix * vec4(cameraX,cameraY,cameraZ, 1)), vec3(0), vec3(0,1,0));
 }
 
 void Beleg::Main::computeProjectionMatrix(void){
@@ -223,6 +227,7 @@ void Beleg::display(void){
 
 void Beleg::Left::init(void){
 
+   
 }
 
 void Beleg::Left::reshape(void){
@@ -283,17 +288,39 @@ void Beleg::Right::keyPressed(){
 void Beleg::handleKeyboardInput(unsigned int key){
 
   // rotate selected node around 
-  // x,y and z axes with keypresses
+  // x,y and z axes with keypressed
+   
   switch(key){
     
   case 'q':
   case 'Q':
     exit(0);
-  case 't':
- 
+  case 'w':
+      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(3.0f), vec3(1, 0, 0));
+      Main::computeViewMatrix();
+      Main::window->redisplay();
+      break;
+  case 's':
+      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(-3.0f), vec3(1, 0, 0));
+      Main::computeViewMatrix();
+      Main::window->redisplay();
+      break;
+  case 'a':
 
+      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(3.0f), vec3(0, 1, 0));
+      Main::computeViewMatrix();
+      Main::window->redisplay();
+      break;
+  case 'd':
+      //cameraY += 1;
+      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(-3.0f), vec3(0, 1, 0));
+      Main::computeViewMatrix();
+      Main::window->redisplay();
+      break;
+  
   default:
     break;
+
   }
 }
 
@@ -307,16 +334,22 @@ void Beleg::Main::specialKey(){
 
   case Keyboard::Code::UP:
     
+      cameraX -= 1;
+      display();
     break;
   case Keyboard::Code::DOWN:
-    
+      cameraX += 1;
+      display();
     break;
   case Keyboard::Code::LEFT:
-    
+      cameraY += 1;
+      display();
     break;
   case Keyboard::Code::RIGHT:
-    
+      cameraY -= 1;
+      display();
     break;
+  
   default:
     break;
   }

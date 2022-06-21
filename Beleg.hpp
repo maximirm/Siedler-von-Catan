@@ -44,6 +44,10 @@ public:
   // keyboard callback
   static void keyPressed();
 
+  static float cameraZ;
+  static float cameraX;
+  static float cameraY;
+
 
 protected:
     class Main;
@@ -51,6 +55,7 @@ protected:
   class Island{
 
       friend class Beleg::Main;
+
      
 
   private:
@@ -70,6 +75,7 @@ public:
   class Main : public OpenGLApplication<configMain>{
 
     friend class Beleg::Island;
+    friend class Beleg;
     
   public:
     
@@ -104,8 +110,10 @@ public:
     
     static float pan;
     
-    // camera position                                                           
-    static float cameraZ;
+    // camera position maybe not in main                                                          
+    //static float cameraZ;
+    //static float cameraX;
+    //static float cameraY;
     
     // near and far plane                                                        
     static float nearPlane, farPlane;
@@ -113,6 +121,7 @@ public:
     static glm::mat4 projectionMatrix;
     static glm::mat4 viewMatrix;
     static glm::mat4 modelMatrix;
+    static glm::mat4 rotationMatrix;
     
     static LightSource lightSource;
     static Material material;
@@ -122,7 +131,7 @@ public:
     };
     
     // ML schnipp
-    static TriangleMesh mesh;
+    static TriangleMesh islandMesh;
     static glsl::Shader diffuseShader, texturingShader;
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     
