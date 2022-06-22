@@ -58,6 +58,7 @@ GLfloat Beleg::Main::fov= 45.0;
 GLfloat Beleg::cameraZ= 6;
 GLfloat Beleg::cameraX = 0;
 GLfloat Beleg::cameraY = 1;
+static float scaling = 1;
 
 mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelMatrix(1);
 mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
@@ -91,8 +92,8 @@ LightSource Beleg::Main::lightSource={
 void Beleg::Main::init(){
   
   // ML schnipp
-  //mesh.setWinding(TriangleMesh::CW);
-  //mesh.load("meshes/platform.obj");
+  islandMesh.setWinding(TriangleMesh::CW);
+  islandMesh.load("meshes/platform.obj");
 
 
   const std::string version= "#version 120\n";
@@ -144,7 +145,9 @@ void Beleg::Main::reshape(){
 
 void Beleg::Main::computeViewMatrix(void){
 
-  viewMatrix= glm::lookAt(vec3(rotationMatrix * vec4(cameraX,cameraY,cameraZ, 1)), vec3(0), vec3(0,1,0));
+    vec3 newPosition = vec3(rotationMatrix * vec4(cameraX, cameraY, cameraZ, 1));
+
+  viewMatrix= glm::lookAt(newPosition * scaling, vec3(0), vec3(0,1,0));
 }
 
 void Beleg::Main::computeProjectionMatrix(void){
@@ -227,6 +230,7 @@ void Beleg::display(void){
 
 void Beleg::Left::init(void){
 
+
    
 }
 
@@ -306,18 +310,23 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'a':
-
       Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(3.0f), vec3(0, 1, 0));
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
   case 'd':
-      //cameraY += 1;
       Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(-3.0f), vec3(0, 1, 0));
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
-  
+  case 'i':
+      scaling = scaling * 0.9;
+      Main::computeViewMatrix();
+      Main::window->redisplay();
+  case 'k':
+      scaling = scaling * 1.1;
+      Main::computeViewMatrix();
+      Main::window->redisplay();
   default:
     break;
 
@@ -334,20 +343,15 @@ void Beleg::Main::specialKey(){
 
   case Keyboard::Code::UP:
     
-      cameraX -= 1;
-      display();
     break;
   case Keyboard::Code::DOWN:
-      cameraX += 1;
-      display();
+      
     break;
   case Keyboard::Code::LEFT:
-      cameraY += 1;
-      display();
+     
     break;
   case Keyboard::Code::RIGHT:
-      cameraY -= 1;
-      display();
+      
     break;
   
   default:
