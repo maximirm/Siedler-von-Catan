@@ -92,8 +92,8 @@ LightSource Beleg::Main::lightSource={
 void Beleg::Main::init(){
   
   // ML schnipp
-  islandMesh.setWinding(TriangleMesh::CW);
-  islandMesh.load("meshes/platform.obj");
+  //islandMesh.setWinding(TriangleMesh::CW);
+  //islandMesh.load("meshes/platform.obj");
 
 
   const std::string version= "#version 120\n";
