@@ -260,7 +260,8 @@ void Beleg::Left::init(void){
 
 
     const std::string version= "#version 120\n";
-    cubeMeshLeft.load("meshes/quad.off");
+    cubeMeshLeft.load("meshes/quad.off",false);
+    viewMatrixLeft = glm::lookAt(vec3(0,0,-1), vec3(0), vec3(0,1,0));
 
     diffuseShaderLeft.addVertexShader(version);
     diffuseShaderLeft.loadVertexShader("shaders/diffuse.vert");
@@ -281,7 +282,8 @@ void Beleg::Left::init(void){
     texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
     texturingShaderLeft.link();
 
-    topLeftObject = new Island("./textures/topleftpic.ppm", glm::vec3(-0.5), &cubeMeshLeft);
+    topLeftObject = new Island("./textures/topleftpic.ppm", vec3(1,-2,0) , &cubeMeshLeft, true, true);
+
 
 }
 
