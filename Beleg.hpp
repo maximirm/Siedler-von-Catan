@@ -49,13 +49,13 @@ public:
   static float cameraY;
 
 
-protected:
+public:
     class Main;
   
   class Island{
 
       friend class Beleg::Main;
-    
+
 
      
 
@@ -66,8 +66,9 @@ protected:
     TriangleMesh* cubeMesh;
     bool texturing;
     bool lighting;
-  
-    
+    TriangleMesh* cubeMeshLeft;
+
+
   public:
     Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool texturing=true, bool lighting=true);
     void display(glm::mat4 modelMatrix);
@@ -153,8 +154,16 @@ public:
   public:
     
       friend class Beleg::Main;
+      friend class Beleg::Left;
 
+      static LightSource lightSourceLeft;
+      static glm::mat4 projectionMatrixLeft;
+      static glm::mat4 viewMatrixLeft;
+      static glm::mat4 modelMatrixLeft;
+      static TriangleMesh cubeMeshLeft;
+      static Island* topLeftObject;
       static TriangleMesh *leftWindowCube;
+      static glsl::Shader diffuseShaderLeft, texturingShaderLeft;
 
     // initialization
     static void init();
@@ -175,7 +184,7 @@ public:
   public:
 
       friend class Beleg::Main;
-    
+
     // initialization
     static void init();
     

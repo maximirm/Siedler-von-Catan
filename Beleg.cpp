@@ -73,9 +73,23 @@ Beleg::Island* Beleg::Main::topLeftIsland;
 Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
-
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
+// Left window
+mat4 Beleg::Left::projectionMatrixLeft, Beleg::Left::viewMatrixLeft, Beleg::Left::modelMatrixLeft(1);
+TriangleMesh Beleg::Left::cubeMeshLeft;
+glsl::Shader Beleg::Left::diffuseShaderLeft, Beleg::Left::texturingShaderLeft;
+Beleg::Island* Beleg::Left::topLeftObject;
+LightSource Beleg::Left::lightSourceLeft={
+        // position
+        glm::vec4(0, 2, 3, 1),
+        // ambient color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // diffuse color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // specular color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+};
 
 // ML schnapp
 
@@ -234,7 +248,30 @@ void Beleg::display(void){
 void Beleg::Left::init(void){
 
 
-   
+    const std::string version= "#version 120\n";
+    cubeMeshLeft.load("meshes/quad.off");
+
+    diffuseShaderLeft.addVertexShader(version);
+    diffuseShaderLeft.loadVertexShader("shaders/diffuse.vert");
+    diffuseShaderLeft.compileVertexShader();
+    diffuseShaderLeft.addFragmentShader(version);
+    diffuseShaderLeft.loadFragmentShader("shaders/diffuse.frag");
+    diffuseShaderLeft.compileFragmentShader();
+    diffuseShaderLeft.bindVertexAttrib("position", TriangleMesh::attribPosition);
+    diffuseShaderLeft.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+    diffuseShaderLeft.link();
+
+    texturingShaderLeft.loadVertexShader("shaders/texturing.vert");
+    texturingShaderLeft.compileVertexShader();
+    texturingShaderLeft.loadFragmentShader("shaders/texturing.frag");
+    texturingShaderLeft.compileFragmentShader();
+    texturingShaderLeft.bindVertexAttrib("position", TriangleMesh::attribPosition);
+    texturingShaderLeft.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+    texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
+    texturingShaderLeft.link();
+
+    topLeftObject = new Island("./textures/sand.ppm", glm::vec3(-2), &cubeMeshLeft);
+
 }
 
 void Beleg::Left::reshape(void){
@@ -251,7 +288,23 @@ void Beleg::Left::display(void){
   glClearColor(0.3, 0.3, 0.3, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  window->swapBuffers();
+
+    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
+    topLeftObject->display(glm::scale(matrix, vec3(3)));
+
+    // ML schnipp
+    diffuseShaderLeft.bind();
+    diffuseShaderLeft.setUniform("transformation", projectionMatrixLeft*viewMatrixLeft*modelMatrixLeft);
+    diffuseShaderLeft.setUniform("color", vec3(1,1,1));
+    diffuseShaderLeft.setUniform("lightPosition", inverse(modelMatrixLeft)*lightSourceLeft.position);
+    //mesh.draw();
+    diffuseShaderLeft.unbind();
+    // ML schnapp
+
+    window->swapBuffers();
+
+
+
 }
 
 // Right Window
