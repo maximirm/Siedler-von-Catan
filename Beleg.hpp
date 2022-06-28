@@ -49,7 +49,7 @@ public:
   static float cameraY;
 
 
-protected:
+public:
     class Main;
   
   class Island{
