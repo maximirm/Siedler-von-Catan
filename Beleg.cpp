@@ -65,6 +65,7 @@ mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
 
 // ML schnipp
 TriangleMesh Beleg::Main::islandMesh;
+TriangleMesh Beleg::Main::cubeMesh;
 Beleg::Island *Beleg::Main::centerIsland;
 Beleg::Island* Beleg::Main::bottomLeftIsland;
 Beleg::Island* Beleg::Main::bottomRightIsland;
@@ -72,6 +73,7 @@ Beleg::Island* Beleg::Main::leftIsland;
 Beleg::Island* Beleg::Main::topLeftIsland;
 Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
+Beleg::Island* Beleg::Main::skyBox;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -92,8 +94,9 @@ LightSource Beleg::Main::lightSource={
 void Beleg::Main::init(){
   
   // ML schnipp
-  //islandMesh.setWinding(TriangleMesh::CW);
-  //islandMesh.load("meshes/platform.obj");
+  islandMesh.setWinding(TriangleMesh::CW);
+  islandMesh.load("meshes/platform.obj");
+  cubeMesh.load("meshes/cube.obj");
 
 
   const std::string version= "#version 120\n";
@@ -118,15 +121,15 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
   texturingShader.link();
 
-  centerIsland = new Island("./textures/grass.ppm", glm::vec3(0,0,0), "meshes/platform.obj");
-  bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2,0,-0.7), "meshes/platform.obj");
-  bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), "meshes/platform.obj");
-  topLeftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, -0.7), "meshes/platform.obj");
-  topRightIsland = new Island("./textures/sand.ppm", glm::vec3(1.2, 0, 0.7), "meshes/platform.obj");
-  rightIsland = new Island("./textures/cobblestone.ppm", glm::vec3(0, 0, 1.4), "meshes/platform.obj");
-  leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), "meshes/platform.obj");
+  centerIsland = new Island("./textures/grass.ppm", glm::vec3(0, 0, 0), &islandMesh);
+  bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2, 0, -0.7), &islandMesh);
+  bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), &islandMesh);
+  topLeftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, -0.7), &islandMesh);
+  topRightIsland = new Island("./textures/sand.ppm", glm::vec3(1.2, 0, 0.7), &islandMesh);
+  rightIsland = new Island("./textures/cobblestone.ppm", glm::vec3(0, 0, 1.4), &islandMesh);
+  leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
-  
+  skyBox = new Island("./textures/sky.ppm", glm::vec3(10), &cubeMesh);
 
   //ML schnapp
 }
@@ -175,6 +178,7 @@ void Beleg::Main::display(void){
   topRightIsland->display(matrix);
   leftIsland->display(matrix);
   rightIsland->display(matrix);
+  skyBox->display(matrix);
 
 
   // ML schnipp

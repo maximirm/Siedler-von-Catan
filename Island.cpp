@@ -6,11 +6,10 @@ using namespace std;
 
 // TODO load texture
 
-Beleg::Island::Island(std::string texture, glm::vec3 position, std::string mesh) {
+Beleg::Island::Island(std::string texture, glm::vec3 position, TriangleMesh *mesh) {
     this->texture.load(texture);
     this->position = position;
-    Beleg::Main::islandMesh.setWinding(TriangleMesh::CW);
-    Beleg::Main::islandMesh.load(mesh);
+    this->islandMesh = mesh;
 }
 
 
@@ -25,7 +24,7 @@ void Beleg::Island::display(glm::mat4 modelMatrix) {
     Main::texturingShader.setUniform("texture", texture.id());
     Main::texturingShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
     this->texture.bind();
-    Main::islandMesh.draw();
+    this->islandMesh->draw();
     this->texture.unbind();
     Main::texturingShader.unbind();
 }

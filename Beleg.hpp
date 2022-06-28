@@ -55,16 +55,19 @@ protected:
   class Island{
 
       friend class Beleg::Main;
+    
 
      
 
   private:
     glm::vec3 position;
     Texture texture;
+    TriangleMesh* islandMesh;
+    TriangleMesh* cubeMesh;
   
     
   public:
-    Island(std::string texture, glm::vec3 position, std::string mesh);
+    Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer);
     void display(glm::mat4 modelMatrix);
     
     
@@ -132,9 +135,12 @@ public:
     
     // ML schnipp
     static TriangleMesh islandMesh;
+    static TriangleMesh cubeMesh;
+    static TriangleMesh rectangleMesh;
+    static TriangleMesh houseMesh;
     static glsl::Shader diffuseShader, texturingShader;
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
-    
+    static Island* skyBox;
    
     
     // ML schnapp
@@ -144,6 +150,10 @@ public:
     
   public:
     
+      friend class Beleg::Main;
+
+      static TriangleMesh *leftWindowCube;
+
     // initialization
     static void init();
     
@@ -161,6 +171,8 @@ public:
   class Right : public OpenGLApplication<configRight>{
       
   public:
+
+      friend class Beleg::Main;
     
     // initialization
     static void init();
