@@ -296,23 +296,17 @@ void Beleg::Left::reshape(void){
 // display texture on full screen quad
 void Beleg::Left::display(void){
 
-  glClearColor(0.3, 0.3, 0.3, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.3, 0.3, 0.3, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
-    topLeftObject->display(glm::scale(matrix, vec3(3)));
+    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(0.0f), glm::vec3(1,0,0));
 
-    // ML schnipp
-    diffuseShaderLeft.bind();
-    diffuseShaderLeft.setUniform("transformation", projectionMatrixLeft*viewMatrixLeft*modelMatrixLeft);
-    diffuseShaderLeft.setUniform("color", vec3(1,1,1));
-    diffuseShaderLeft.setUniform("lightPosition", inverse(modelMatrixLeft)*lightSourceLeft.position);
-    //mesh.draw();
-    diffuseShaderLeft.unbind();
-    // ML schnapp
+    topLeftObject->display( viewMatrixLeft);
+
 
     window->swapBuffers();
+
 
 
 
