@@ -1,2 +1,4 @@
+make -f Makefile.macos clean
+
 make -f Makefile.macos
 ./Beleg
