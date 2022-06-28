@@ -128,7 +128,7 @@ void Beleg::Main::init(){
   rightIsland = new Island("./textures/cobblestone.ppm", glm::vec3(0, 0, 1.4), &islandMesh);
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
-  skyBox = new Island("./textures/sky.ppm", glm::vec3(10), &cubeMesh);
+  skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
 
   //ML schnapp
 }
@@ -169,7 +169,7 @@ void Beleg::Main::display(void){
 
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(90.0f), glm::vec3(1,0,0));
+  glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
   centerIsland->display(matrix);
   bottomLeftIsland->display(matrix);
   bottomRightIsland->display(matrix);
@@ -177,7 +177,7 @@ void Beleg::Main::display(void){
   topRightIsland->display(matrix);
   leftIsland->display(matrix);
   rightIsland->display(matrix);
-  skyBox->display(matrix);
+  skyBox->display(glm::scale(matrix, vec3(10)));
 
 
   // ML schnipp

@@ -64,10 +64,12 @@ protected:
     Texture texture;
     TriangleMesh* islandMesh;
     TriangleMesh* cubeMesh;
+    bool texturing;
+    bool lighting;
   
     
   public:
-    Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer);
+    Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool texturing=true, bool lighting=true);
     void display(glm::mat4 modelMatrix);
     
     
