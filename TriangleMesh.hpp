@@ -21,6 +21,11 @@
 #include "glm/gtc/constants.hpp"
 
 #include "Material.h"
+#ifdef __APPLE__
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
+#define glBindVertexArray glBindVertexArrayAPPLE
+#endif
 
 #ifdef __APPLE__
 #define glGenVertexArrays glGenVertexArraysAPPLE
