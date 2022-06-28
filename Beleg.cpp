@@ -248,6 +248,7 @@ void Beleg::display(void){
 void Beleg::Left::init(void){
 
 
+
     const std::string version= "#version 120\n";
     cubeMeshLeft.load("meshes/quad.off",false);
     viewMatrixLeft = glm::lookAt(vec3(0,0,-1), vec3(0), vec3(0,1,0));
