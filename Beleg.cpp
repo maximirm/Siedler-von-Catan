@@ -82,7 +82,7 @@ glsl::Shader Beleg::Left::diffuseShaderLeft, Beleg::Left::texturingShaderLeft;
 Beleg::Island* Beleg::Left::topLeftObject;
 LightSource Beleg::Left::lightSourceLeft={
         // position
-        glm::vec4(0, 2, 3, 1),
+        glm::vec4(0, 0, 1, 0),
         // ambient color
         glm::vec4(1.0, 1.0, 1.0, 1.0),
         // diffuse color
@@ -270,7 +270,7 @@ void Beleg::Left::init(void){
     texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
     texturingShaderLeft.link();
 
-    topLeftObject = new Island("./textures/sand.ppm", glm::vec3(-2), &cubeMeshLeft);
+    topLeftObject = new Island("./textures/topleftpic.ppm", glm::vec3(-0.5), &cubeMeshLeft);
 
 }
 
