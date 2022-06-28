@@ -22,6 +22,11 @@
 
 #include "Material.h"
 
+#ifdef __APPLE__
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
+#define glBindVertexArray glBindVertexArrayAPPLE
+#endif
 /*
  * Class for a simple triangle mesh represented as an indexed face set
  */
