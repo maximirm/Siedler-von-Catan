@@ -249,7 +249,8 @@ void Beleg::Left::init(void){
 
 
     const std::string version= "#version 120\n";
-    cubeMeshLeft.load("meshes/quad.off");
+    cubeMeshLeft.load("meshes/quad.off",false);
+    viewMatrixLeft = glm::lookAt(vec3(0,0,-1), vec3(0), vec3(0,1,0));
 
     diffuseShaderLeft.addVertexShader(version);
     diffuseShaderLeft.loadVertexShader("shaders/diffuse.vert");
@@ -270,7 +271,7 @@ void Beleg::Left::init(void){
     texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
     texturingShaderLeft.link();
 
-    topLeftObject = new Island("./textures/topleftpic.ppm", glm::vec3(-0.5), &cubeMeshLeft);
+    topLeftObject = new Island("./textures/topleftpic.ppm", vec3(1,-2,0) , &cubeMeshLeft, true, true);
 
 }
 
@@ -289,17 +290,10 @@ void Beleg::Left::display(void){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
-    topLeftObject->display(glm::scale(matrix, vec3(3)));
+    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(0.0f), glm::vec3(1,0,0));
 
-    // ML schnipp
-    diffuseShaderLeft.bind();
-    diffuseShaderLeft.setUniform("transformation", projectionMatrixLeft*viewMatrixLeft*modelMatrixLeft);
-    diffuseShaderLeft.setUniform("color", vec3(1,1,1));
-    diffuseShaderLeft.setUniform("lightPosition", inverse(modelMatrixLeft)*lightSourceLeft.position);
-    //mesh.draw();
-    diffuseShaderLeft.unbind();
-    // ML schnapp
+    topLeftObject->display( viewMatrixLeft);
+
 
     window->swapBuffers();
 
