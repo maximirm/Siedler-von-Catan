@@ -34,22 +34,21 @@ using namespace std;
 			    (Window::DOUBLE | Window::DEPTH | Window::RGB | Window::MULTISAMPLE),
 			    8,
 			    glm::uvec2(50, 50),
-			    glm::uvec2(512, 768),
+			    glm::uvec2(281, 395),
 			    "Computer Graphics - Beleg");
 
  OpenGLConfiguration configLeft(config,
 				glm::uvec2(0, 0),
-				glm::uvec2((config.size.x)/2, config.size.y/3),
+				glm::uvec2(167, 114),
 				"");
 
 OpenGLConfiguration configRight(config,
-				glm::uvec2((config.size.x)/2, 0),
-				glm::uvec2((config.size.x)/2, config.size.y/3),
+				glm::uvec2(167, 0),
+				glm::uvec2(114, 114),
 				"");
-
 OpenGLConfiguration configMain(config,
-			       glm::uvec2(0, config.size.y/3),
-			       glm::uvec2(config.size.x, 2*(config.size.y/3)),
+			       glm::uvec2(0, 114),
+			       glm::uvec2(281, 281),
 			       "");
 
 
