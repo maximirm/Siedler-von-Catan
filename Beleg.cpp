@@ -65,6 +65,7 @@ mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
 // ML schnipp
 TriangleMesh Beleg::Main::islandMesh;
 TriangleMesh Beleg::Main::cubeMesh;
+TriangleMesh Beleg::Main::houseMesh;
 Beleg::Island *Beleg::Main::centerIsland;
 Beleg::Island* Beleg::Main::bottomLeftIsland;
 Beleg::Island* Beleg::Main::bottomRightIsland;
@@ -73,6 +74,7 @@ Beleg::Island* Beleg::Main::topLeftIsland;
 Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
+std::vector<Beleg::Island*> Beleg::Main::houses;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -96,6 +98,7 @@ void Beleg::Main::init(){
   islandMesh.setWinding(TriangleMesh::CW);
   islandMesh.load("meshes/platform.obj");
   cubeMesh.load("meshes/cube.obj");
+  houseMesh.load("meshes/Hauschen-Body.obj");
 
 
   const std::string version= "#version 120\n";
@@ -118,6 +121,8 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("position", TriangleMesh::attribPosition);
   texturingShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
+
+  
   texturingShader.link();
 
   centerIsland = new Island("./textures/grass.ppm", glm::vec3(0, 0, 0), &islandMesh);
@@ -130,6 +135,7 @@ void Beleg::Main::init(){
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
 
+  houses.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 0.8, 1), &houseMesh));
   //ML schnapp
 }
 
@@ -178,6 +184,10 @@ void Beleg::Main::display(void){
   leftIsland->display(matrix);
   rightIsland->display(matrix);
   skyBox->display(glm::scale(matrix, vec3(10)));
+  for (auto i : houses) {
+      i->display(glm::scale(modelMatrix, vec3(0.5)));
+  }
+  
 
 
   // ML schnipp

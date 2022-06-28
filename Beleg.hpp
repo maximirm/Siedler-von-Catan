@@ -49,7 +49,7 @@ public:
   static float cameraY;
 
 
-protected:
+public:
     class Main;
   
   class Island{
@@ -66,6 +66,7 @@ protected:
     TriangleMesh* cubeMesh;
     bool texturing;
     bool lighting;
+
   
     
   public:
@@ -143,6 +144,7 @@ public:
     static glsl::Shader diffuseShader, texturingShader;
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;
+    static std::vector <Beleg::Island*> houses;
    
     
     // ML schnapp
