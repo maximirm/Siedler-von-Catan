@@ -149,28 +149,36 @@ public:
     
     // ML schnapp
   };
-  
-  class Left : public OpenGLApplication<configLeft>{
-    
-  public:
-    
-      friend class Beleg::Main;
 
-      static TriangleMesh *leftWindowCube;
+    class Left : public OpenGLApplication<configLeft>{
 
-    // initialization
-    static void init();
-    
-    // display scene
-    static void display(void);
-    
-    // called after window rehape
-    static void reshape();
-    
-    // keyboard callback
-    static void keyPressed();
-    
-  };
+    public:
+
+        friend class Beleg::Main;
+        friend class Beleg::Left;
+
+        static LightSource lightSourceLeft;
+        static glm::mat4 projectionMatrixLeft;
+        static glm::mat4 viewMatrixLeft;
+        static glm::mat4 modelMatrixLeft;
+        static TriangleMesh cubeMeshLeft;
+        static Island* topLeftObject;
+        static TriangleMesh *leftWindowCube;
+        static glsl::Shader diffuseShaderLeft, texturingShaderLeft;
+
+        // initialization
+        static void init();
+
+        // display scene
+        static void display(void);
+
+        // called after window rehape
+        static void reshape();
+
+        // keyboard callback
+        static void keyPressed();
+
+    };
   
   class Right : public OpenGLApplication<configRight>{
       
