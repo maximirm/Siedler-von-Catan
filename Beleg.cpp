@@ -63,9 +63,15 @@ mat4 Beleg::Main::projectionMatrix, Beleg::Main::viewMatrix, Beleg::Main::modelM
 mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
 
 // ML schnipp
+//meshes
 TriangleMesh Beleg::Main::islandMesh;
 TriangleMesh Beleg::Main::cubeMesh;
 TriangleMesh Beleg::Main::houseMesh;
+TriangleMesh Beleg::Main::streetMesh;
+TriangleMesh Beleg::Main::siedlungMesh;
+TriangleMesh Beleg::Main::knightMesh;
+
+//Objects/Islands
 Beleg::Island *Beleg::Main::centerIsland;
 Beleg::Island* Beleg::Main::bottomLeftIsland;
 Beleg::Island* Beleg::Main::bottomRightIsland;
@@ -74,7 +80,7 @@ Beleg::Island* Beleg::Main::topLeftIsland;
 Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
-std::vector<Beleg::Island*> Beleg::Main::houses;
+std::vector<Beleg::Island*> Beleg::Main::decorations;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -110,11 +116,14 @@ LightSource Beleg::Main::lightSource={
 void Beleg::Main::init(){
   
   // ML schnipp
+    //load ze meshes
   islandMesh.setWinding(TriangleMesh::CW);
   islandMesh.load("meshes/platform.obj");
   cubeMesh.load("meshes/cube.obj");
-  houseMesh.load("meshes/Hauschen-Body.obj");
-
+  houseMesh.load("meshes/Haus.obj");
+  streetMesh.load("meshes/Strasse.obj");
+  siedlungMesh.load("meshes/Siedlung.obj");
+  knightMesh.load("meshes/Ritter.obj");
 
   const std::string version= "#version 120\n";
 
@@ -137,9 +146,10 @@ void Beleg::Main::init(){
   texturingShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
   texturingShader.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
 
-
+  
   texturingShader.link();
 
+  //create the objects
   centerIsland = new Island("./textures/grass.ppm", glm::vec3(0, 0, 0), &islandMesh);
   bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2, 0, -0.7), &islandMesh);
   bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), &islandMesh);
@@ -150,7 +160,11 @@ void Beleg::Main::init(){
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
 
-  houses.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 0.8, 1), &houseMesh));
+  //decorate the island with vector of objects
+  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
+  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(2, 1.7, 2), &siedlungMesh));
+  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(-1, 1.7, 2), &knightMesh));
+  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(-1, 1.6, -2), &streetMesh));
   //ML schnapp
 }
 
@@ -199,10 +213,10 @@ void Beleg::Main::display(void){
   leftIsland->display(matrix);
   rightIsland->display(matrix);
   skyBox->display(glm::scale(matrix, vec3(10)));
-  for (auto i : houses) {
-      i->display(glm::scale(modelMatrix, vec3(0.5)));
+  for (auto i : decorations) {
+      i->display(glm::scale(modelMatrix, vec3(0.2)));
   }
-
+  
 
 
   // ML schnipp
@@ -260,8 +274,7 @@ void Beleg::Left::init(void){
 
 
     const std::string version= "#version 120\n";
-    cubeMeshLeft.load("meshes/quad.off",false);
-    viewMatrixLeft = glm::lookAt(vec3(0,0,-1), vec3(0), vec3(0,1,0));
+    cubeMeshLeft.load("meshes/quad.off");
 
     diffuseShaderLeft.addVertexShader(version);
     diffuseShaderLeft.loadVertexShader("shaders/diffuse.vert");
@@ -282,8 +295,7 @@ void Beleg::Left::init(void){
     texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
     texturingShaderLeft.link();
 
-    topLeftObject = new Island("./textures/topleftpic.ppm", vec3(1,-2,0) , &cubeMeshLeft, true, true);
-
+    topLeftObject = new Island("./textures/topleftpic.ppm", glm::vec3(-0.5), &cubeMeshLeft, false, true);
 
 }
 
@@ -298,17 +310,23 @@ void Beleg::Left::reshape(void){
 // display texture on full screen quad
 void Beleg::Left::display(void){
 
-    glClearColor(0.3, 0.3, 0.3, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(0.3, 0.3, 0.3, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(0.0f), glm::vec3(1,0,0));
+    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
+    topLeftObject->display(glm::scale(matrix, vec3(3)));
 
-    topLeftObject->display( viewMatrixLeft);
-
+    // ML schnipp
+    diffuseShaderLeft.bind();
+    diffuseShaderLeft.setUniform("transformation", projectionMatrixLeft*viewMatrixLeft*modelMatrixLeft);
+    diffuseShaderLeft.setUniform("color", vec3(1,1,1));
+    diffuseShaderLeft.setUniform("lightPosition", inverse(modelMatrixLeft)*lightSourceLeft.position);
+    //mesh.draw();
+    diffuseShaderLeft.unbind();
+    // ML schnapp
 
     window->swapBuffers();
-
 
 
 

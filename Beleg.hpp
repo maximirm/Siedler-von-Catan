@@ -55,7 +55,7 @@ public:
   class Island{
 
       friend class Beleg::Main;
-    
+
 
      
 
@@ -66,11 +66,11 @@ public:
     TriangleMesh* cubeMesh;
     bool texturing;
     bool lighting;
+    TriangleMesh* cubeMeshLeft;
 
-  
-    
+
   public:
-    Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool texturing=true, bool lighting=true);
+    Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool lighting=true, bool texturing = true);
     void display(glm::mat4 modelMatrix);
     
     
@@ -141,51 +141,54 @@ public:
     static TriangleMesh cubeMesh;
     static TriangleMesh rectangleMesh;
     static TriangleMesh houseMesh;
+    static TriangleMesh streetMesh;
+    static TriangleMesh siedlungMesh;
+    static TriangleMesh knightMesh;
     static glsl::Shader diffuseShader, texturingShader;
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;
-    static std::vector <Beleg::Island*> houses;
+    static std::vector <Beleg::Island*> decorations;
    
     
     // ML schnapp
   };
+  
+  class Left : public OpenGLApplication<configLeft>{
+    
+  public:
+    
+      friend class Beleg::Main;
+      friend class Beleg::Left;
 
-    class Left : public OpenGLApplication<configLeft>{
+      static LightSource lightSourceLeft;
+      static glm::mat4 projectionMatrixLeft;
+      static glm::mat4 viewMatrixLeft;
+      static glm::mat4 modelMatrixLeft;
+      static TriangleMesh cubeMeshLeft;
+      static Island* topLeftObject;
+      static TriangleMesh *leftWindowCube;
+      static glsl::Shader diffuseShaderLeft, texturingShaderLeft;
 
-    public:
-
-        friend class Beleg::Main;
-        friend class Beleg::Left;
-
-        static LightSource lightSourceLeft;
-        static glm::mat4 projectionMatrixLeft;
-        static glm::mat4 viewMatrixLeft;
-        static glm::mat4 modelMatrixLeft;
-        static TriangleMesh cubeMeshLeft;
-        static Island* topLeftObject;
-        static TriangleMesh *leftWindowCube;
-        static glsl::Shader diffuseShaderLeft, texturingShaderLeft;
-
-        // initialization
-        static void init();
-
-        // display scene
-        static void display(void);
-
-        // called after window rehape
-        static void reshape();
-
-        // keyboard callback
-        static void keyPressed();
-
-    };
+    // initialization
+    static void init();
+    
+    // display scene
+    static void display(void);
+    
+    // called after window rehape
+    static void reshape();
+    
+    // keyboard callback
+    static void keyPressed();
+    
+  };
   
   class Right : public OpenGLApplication<configRight>{
       
   public:
 
       friend class Beleg::Main;
-    
+
     // initialization
     static void init();
     
