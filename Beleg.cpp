@@ -81,6 +81,7 @@ Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
+Beleg::Island* Beleg::Main::dice1;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -159,6 +160,7 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
+  dice1 = new Island("./textures/cobblestone.ppm", glm::vec3(2,1, -1), &cubeMesh);
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -213,6 +215,7 @@ void Beleg::Main::display(void){
   leftIsland->display(matrix);
   rightIsland->display(matrix);
   skyBox->display(glm::scale(matrix, vec3(10)));
+  dice1->display(modelMatrix);
   for (auto i : decorations) {
       i->display(glm::scale(modelMatrix, vec3(0.2)));
   }
@@ -404,14 +407,44 @@ void Beleg::handleKeyboardInput(unsigned int key){
       scaling = scaling * 0.9;
       Main::computeViewMatrix();
       Main::window->redisplay();
+      break;
   case 'k':
       scaling = scaling * 1.1;
       Main::computeViewMatrix();
       Main::window->redisplay();
+      break;
+  case 'r':
+      Beleg::Main::rollDice();
+      Main::window->redisplay();
+      break;
   default:
     break;
 
   }
+}
+
+//prototype for dice rolling
+void Beleg::Main::rollDice() {
+    
+    vec3 dicePosition = vec3(2, 1, -1);
+
+    //generate random number between 3 and 1
+    int diceSide;
+    diceSide = rand() % 3 + 1;
+    switch (diceSide) {
+    case 1:
+        dice1 = new Island("./textures/checker.ppm", dicePosition, &cubeMesh);
+        break;
+    case 2:
+        dice1 = new Island("./textures/sky.ppm", dicePosition, &cubeMesh);
+        break;
+    case 3:
+        dice1 = new Island("./textures/grass.ppm", dicePosition, &cubeMesh);
+        break;
+    default:
+        break;
+    }
+
 }
 
 // keyboard callback for special keys
@@ -440,7 +473,7 @@ void Beleg::Main::specialKey(){
   }
 }
 
-vector< pair < int, string > > Beleg::Main::menuEntries{{Menu::QUIT, "quit"}};
+vector< pair < int, string > > Beleg::Main::menuEntries{ {Menu::QUIT, "quit"} };
 
 // mouse menu control
 void Beleg::Main::menu(int id){

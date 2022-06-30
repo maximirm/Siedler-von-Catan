@@ -102,6 +102,9 @@ public:
     
     // keyboard callback for special keys 
     static void specialKey();
+
+    //this is where the rolling happens
+    static void rollDice();
     
     // menu entries
     static std::vector< std::pair< int, std::string > >  menuEntries;
@@ -148,6 +151,7 @@ public:
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;
     static std::vector <Beleg::Island*> decorations;
+    static Island* dice1;
    
     
     // ML schnapp
