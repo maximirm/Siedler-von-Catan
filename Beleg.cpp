@@ -414,7 +414,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'r':
-      Beleg::Main::rollDice();
+      Beleg::Main::rollDice(Beleg::Main::dice1);
       Main::window->redisplay();
       break;
   default:
@@ -424,7 +424,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
 }
 
 //prototype for dice rolling
-void Beleg::Main::rollDice() {
+void Beleg::Main::rollDice(Island *dice) {
     
     vec3 dicePosition = vec3(2, 1, -1);
 
@@ -433,13 +433,13 @@ void Beleg::Main::rollDice() {
     diceSide = rand() % 3 + 1;
     switch (diceSide) {
     case 1:
-        dice1 = new Island("./textures/checker.ppm", dicePosition, &cubeMesh);
+        dice->setTexture("./textures/checker.ppm");
         break;
     case 2:
-        dice1 = new Island("./textures/sky.ppm", dicePosition, &cubeMesh);
+        dice->setTexture("./textures/sky.ppm");
         break;
     case 3:
-        dice1 = new Island("./textures/grass.ppm", dicePosition, &cubeMesh);
+        dice->setTexture("./textures/grass.ppm");
         break;
     default:
         break;

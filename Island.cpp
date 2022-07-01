@@ -30,3 +30,7 @@ void Beleg::Island::display(glm::mat4 modelMatrix) {
     this->texture.unbind();
     Main::texturingShader.unbind();
 }
+
+void Beleg::Island::setTexture(std::string texture) {
+    this->texture.load(texture);
+}
