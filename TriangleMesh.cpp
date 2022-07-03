@@ -19,7 +19,6 @@ using namespace glm;
 #include <iostream>
 #include <limits>
 
-
 #include "GLError.hpp"
 
 using namespace std;
@@ -31,9 +30,8 @@ const GLuint TriangleMesh::attribNormal= 2;
 const GLuint TriangleMesh::attribColor= 3;
 const GLuint TriangleMesh::attribTexCoord= 8;
 
-TriangleMesh::TriangleMesh() : winding(CW),
-			       vao(0),
-			       ibo(0){
+TriangleMesh::TriangleMesh() : winding(CW){
+  
   vbo[0]=0;
   vbo[1]=0;
   vbo[2]=0;
@@ -46,27 +44,33 @@ TriangleMesh::~TriangleMesh(){
 
 void TriangleMesh::clearBuffers(void){
 
-#ifdef __APPLE__
-  if(vao > 0 && glIsVertexArray(vao)) glDeleteVertexArraysAPPLE(1, &vao);
-#else
-  if(vao > 0 && glIsVertexArray(vao)) glDeleteVertexArrays(1, &vao);
-#endif
-  vao = 0;
-  if(vbo[0]>0 && glIsBuffer(vbo[0])) glDeleteBuffers(1, &vbo[0]);
+  if(vbo[0] && glIsBuffer(vbo[0])) glDeleteBuffers(1, &vbo[0]);
   vbo[0]= 0;
-  
-  if(vbo[1]>0 && glIsBuffer(vbo[1])) glDeleteBuffers(1, &vbo[1]);
+  if(vbo[1] && glIsBuffer(vbo[1])) glDeleteBuffers(1, &vbo[1]);
   vbo[1]= 0; 
-  if(vbo[2]>0 && glIsBuffer(vbo[2])) glDeleteBuffers(1, &vbo[2]);
-  vbo[2]= 0;
-  
-  if(ibo>0 && glIsBuffer(ibo)) glDeleteBuffers(1, &ibo);
-  ibo= 0;
+  if(vbo[2] && glIsBuffer(vbo[2])) glDeleteBuffers(1, &vbo[2]);
+  vbo[2]= 0;  
 }
 
-void TriangleMesh::reload(void){
+TriangleMesh::Segment::~Segment(){
+  
+  //  if(vao && glIsVertexArray(vao)) glDeleteVertexArrays(1, &vao);
+  //if(ibo && glIsBuffer(ibo)) glDeleteBuffers(1, &ibo);
+}
 
-  load(name);
+float TriangleMesh::getBoundingSphereRadius(void){
+  return boundingSphereRadius;
+}
+
+pair<vec3, vec3> TriangleMesh::getBoundingBox(void){
+  return pair<vec3, vec3> (boundingBoxMin, boundingBoxMax);
+}
+
+Material TriangleMesh::getMaterial(string name){
+  if(name == "default"){
+    return {name, vec4(1), vec4(1), vec4(1), 1};
+  }
+  return materials[name];
 }
 
 void TriangleMesh::load(const std::string& fileName, bool unitize, bool center){
@@ -80,6 +84,8 @@ void TriangleMesh::load(const std::string& fileName, bool unitize, bool center){
   texCoords.clear();
   faces.clear();
 
+  groups.clear();
+  materials.clear();
   
   if(fileName.size() > 3 && fileName.compare(fileName.size()-4, 4, ".off")==0)
     loadOff(fileName);
@@ -89,15 +95,26 @@ void TriangleMesh::load(const std::string& fileName, bool unitize, bool center){
     cerr << "Unknown file format for triangle mesh. Must be .off or .obj." << endl;
     return;
   }
+
   if(center) this->center();
   if(unitize) this->unitize();
+  computeBoundingSphere();
+  computeBoundingBox();
   if(normals.size()==0) computeNormals();
   if(texCoords.size()==0) computeSphereUVs();
-  
-  uploadBuffers();  
+  uploadVertexBuffers();
+
+  vector<Group>::iterator group= begin();
+  while(group != end()){
+    vector<Segment>::iterator segment= group->begin();
+    while(segment != group->end()){
+      segment->uploadIndexBuffer();
+      segment->createVAO(vbo);
+      segment++;
+    }
+    group++;
+  }
 }
-
-
 
 void TriangleMesh::setWinding(PolygonWinding winding){
   this->winding= winding;
@@ -129,17 +146,18 @@ void TriangleMesh::loadObj(const string &filename){
 	    groups.clear();
 	    materials.clear();
 	    
-	    // begin first (and possibly only) group
-	    Group begin= {"default", 0, ""};
-	    groups.push_back(begin);
-	    
-	    string group= "";
+	    string material= "default";
+	    string texture= "off";
 
+	    groups.push_back(Group(0, "default", material, texture));
+	    std::vector<Group>::iterator group= groups.begin();
+	    
 	    boundingSphereRadius= 0;
 
 	    ifstream file;
 	    file.open(filename.c_str());
-	 
+	    assert(file.is_open());
+	    
 	    string l;
 
 	    while(getline(file, l)){  
@@ -204,26 +222,34 @@ void TriangleMesh::loadObj(const string &filename){
 		triangulate(positionIndices, texCoordIndices, normalIndices);
 	      } // end face
 	      else if(type == GROUP){
-
+		
+		if(faces.size()==0) groups.pop_back();
+		else group->end(faces.size());
 		string name;
 		line >> name;
-		Group group= {name, faces.size(), ""};
-		groups.push_back(group);
+		group= find_if(groups.begin(), groups.end(), [&] (Group g){ return g.name == name; });
+		if(group== groups.end()){
+		  groups.push_back(Group(faces.size(), name, material, texture));
+		  group= --groups.end();
+		}
+		else group->begin(faces.size());
+		
 	      } // end group
-	      else if(type == MTL_GROUP){ // materials separrately specified
+	      else if(type == MTL_GROUP){ // materials separately specified
 
-	      	line >> group;
+		group->end(faces.size());
+		string name;
+	      	line >> name;
+		group= find_if(groups.begin(), groups.end(), [&] (Group g){ return g.name == name; });
+		assert(group!=groups.end());
 	      }
 	      else if(type == USE_MTL){
 
-	      	string material;
 	      	line >> material;
-		if(group != "")
-		   addMaterial(group, material);
-		else groups.back().material= material;
+	        group->addSegment(faces.size(), material, texture);
 	      }
 	      else if(type == MTL_LIB){
-
+		
 	      	string dir, library;
 		stringstream name(filename);
 		getline(name, dir, '/');
@@ -232,22 +258,24 @@ void TriangleMesh::loadObj(const string &filename){
 		
 	      	parseMaterials(name.str());
 	      }
-	      
 	    } // eof
-	    // end last (and possibly only) group
-	    Group end= {"default", faces.size(), ""};
-	    groups.push_back(end);
 
+	    group->end(faces.size());
+	    
 	    file.close();
-
+	    
 	    cout << "loaded " << filename << ": " 
 		 << positions.size() << " vertices, " << texCoordsRAW.size() << " texture coordinates, " << normalsRAW.size() << " normals, " 
-		 << faces.size() << " faces, " << (groups.size()-2) << " groups, " << materials.size() << " materials" << endl;	    
-
+		 << faces.size() << " faces, " << groups.size() << " groups, " << materials.size() << " materials" << endl;	    
+	    
 	    // bring to format opengl eats
 	    // this means possible duplication of normals 
-	    // and / or texture coordinates
-	    clean();
+		 // and / or texture coordinates
+		 clean();
+
+	    for(int i= 0; i<groups.size(); i++){
+	      groups[i].computeElements(faces);
+	    }	    	    
 }
 	    
 // parse a material library	
@@ -262,7 +290,7 @@ void TriangleMesh::parseMaterials(string filename){
 	    ifstream file;
 	    file.open(filename.c_str());
 	    
-	      string l;
+	    string l, current;
 
 	    while(getline(file, l)){  
 
@@ -274,48 +302,41 @@ void TriangleMesh::parseMaterials(string filename){
 		
 		string name;
 		line >> name;
-		Material m;
-		m.name= name;
-		materials.push_back(m);
+		Material material;
+		material.name= name;
+		materials[name]= material;
+		current= name;
 	      }
 	      else if(type == MATERIAL_AMBIENT){
 
 		float r, g, b;
 		line >> r >> g >> b;
 		vec4 ambient= vec4(r,g,b,1.0f);
-		materials.back().ambient= ambient;
+		materials[current].ambient= ambient;
 	      }
 	      else if(type == MATERIAL_DIFFUSE){
 
 		float r, g, b;
 		line >> r >> g >> b;
 		vec4 diffuse= vec4(r,g,b,1.0f);
-		materials.back().diffuse= diffuse;
+		materials[current].diffuse= diffuse;
 	      }
 	      else if(type == MATERIAL_SPECULAR){
 
 		float r, g, b;
 		line >> r >> g >> b;
 		vec4 specular= vec4(r,g,b,1.0f);
-		materials.back().specular= specular;
+		materials[current].specular= specular;
 	      }
 	      else if(type == SPECULAR_EXPONENT){
 
 		float exponent;
 		line >> exponent;
-		materials.back().shininess= exponent;
+		materials[current].shininess= exponent;
 	      }
 	    } // eof
 	    file.close();
 }
-
-// add material to group
-void TriangleMesh::addMaterial(string group, string material){
-  for(unsigned int i= 0; i<groups.size(); ++i){
-    if(groups[i].name == group) groups[i].material= material;
-  }
-}
-
 
 // TODO: load triangle mesh in OFF format
 void TriangleMesh::loadOff(const string& fileName){
@@ -323,6 +344,8 @@ void TriangleMesh::loadOff(const string& fileName){
   // Open the file
   std::ifstream file(fileName.c_str());
   assert(file.is_open());
+
+  groups.push_back(Group(0, "default", "default", "off"));
  
   std::string magic;
 
@@ -365,9 +388,16 @@ void TriangleMesh::loadOff(const string& fileName){
     else
       faces[i]= uvec3(a, c, b);
   }
-
+  
   // close file
   file.close();
+
+  groups.back().end(faces.size());
+
+  for(int i= 0; i<groups.size(); i++){
+    groups[i].computeElements(faces);
+  }
+  
   cout << "Mesh: reading off file done. |V|=" << positions.size() << " |F|=" << faces.size() << endl;
 }
 
@@ -466,11 +496,11 @@ void TriangleMesh::clean(void){
     normalsRAW.clear();
     normalIndices.clear();
   }
-  
+
   if(texCoordIndices.size()>0){
     texCoords.clear();
     texCoords.resize(positions.size());
-    for(unsigned int i= 0; i<texCoordIndices.size(); i++){    
+    for(unsigned int i= 0; i<texCoordIndices.size(); i++){
       texCoords[faces[i][0]]= texCoordsRAW[texCoordIndices[i][0]];
       texCoords[faces[i][1]]= texCoordsRAW[texCoordIndices[i][1]];
       texCoords[faces[i][2]]= texCoordsRAW[texCoordIndices[i][2]];
@@ -571,92 +601,118 @@ void TriangleMesh::computeSphereUVs(void){
 }
 
 // called whenever a new mesh is loaded
-void TriangleMesh::uploadBuffers(void){
+void TriangleMesh::uploadVertexBuffers(void){
   
-  //vertex array object
-#ifdef __APPLE__
-  glGenVertexArraysAPPLE(1, &vao);
-#else
-  glGenVertexArrays(1, &vao);
-#endif
-  assert(vao);
   // vertex buffers 
-  glGenBuffers(3, vbo);
+  glGenBuffers(3, &vbo[0]);
   assert(vbo[0]);
   assert(vbo[1]);
   assert(vbo[2]);
-  // index buffer
-  glGenBuffers(1, &ibo);
-  assert(ibo);
   
-  // bind vertex array object for first time
-  // begin record
-#ifdef __APPLE__
-  glBindVertexArrayAPPLE(vao);
-#else
-  glBindVertexArray(vao);
-#endif
-
-  // activate vertex position array
-  // modifies the state of the currently bound vertex array object
-  glEnableVertexAttribArray(attribPosition);       
+  glBindVertexArray(0);
   
-  // bind buffer
+  // bind buffer on GPU which is to receive position data
   glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);         
   
   // specify from where to read the position data and how many bytes to read
   glBufferData(GL_ARRAY_BUFFER,
 	       positions.size() * sizeof(vec3),  // how many bytes?
-	       &positions[0],                    // location of position data
+	       &positions[0],                    // location of position data on host
 	       GL_STATIC_DRAW);                  // no animation (hint)
 
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(vec3), &normals[0], GL_STATIC_DRAW);            
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+  glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof(vec2), &texCoords[0], GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}  
+
+void TriangleMesh::Segment::uploadIndexBuffer(){
+  
+  // create index buffer
+  glGenBuffers(1, &ibo);
+  assert(ibo);
+
+  // bind buffer on GPU which is to receive index data
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+  // specify buffer data for triangles
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+	       elements.size() * sizeof(uvec3),     // how many bytes?  
+	       &elements[0],                        // location of index data on host
+	       GL_STATIC_DRAW);                     // no animation (hint)
+}
+
+void TriangleMesh::Segment::createVAO(unsigned int vbo[]){
+  
+  // create vertex array object
+  // this is just a unique id
+  glGenVertexArrays(1, &vao);
+  assert(vao);
+
+  // bind vertex array object for first time
+  // and begin record
+  glBindVertexArray(vao);
+  
+  // activate vertex attribute position
+  // -> values in the vertex attribute array associated with vertex attribute "attribPosition" will be used for rendering
+  // this call modifies the state of the currently bound vertex array object
+  glEnableVertexAttribArray(attribPosition);
+  
+  // bind vertex position buffer
+  // vao will "record" this call and repeat it whenever the vao is bound
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+  
   // how is the buffer data to be interpreted?
-  glVertexAttribPointer(attribPosition,          // vertex attribute
+  glVertexAttribPointer(attribPosition,          // vertex attribute to associate position data with
 			3,                       // size of n-tuple (here: vec3) making up a position
 			GL_FLOAT,                // data type of elements in n-tuple
 			GL_FALSE,                // normalize?
 			0,                       // stride
-			(GLvoid*) 0);            // offset
+			(GLvoid*) 0);            // a value of 0 tells opengl to use data from currently bound buffer
+
   
-  glEnableVertexAttribArray(attribNormal);       // activate normal coords array
-  glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);         // for normal coordinates 
-  glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(vec3), &normals[0], GL_STATIC_DRAW);            
+  // enable vertex attribute array associated with vertex attribute normal
+  glEnableVertexAttribArray(attribNormal);
+  // bind vertex normal buffer
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+  // how is the buffer data to be interpreted?
   glVertexAttribPointer(attribNormal, 3, GL_FLOAT, GL_TRUE, 0, (GLvoid*) 0);
 
-  glEnableVertexAttribArray(attribTexCoord);     // activate normal coords array
-  glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);         // for normal coordinates
-  glBufferData(GL_ARRAY_BUFFER, texCoords.size()*sizeof(vec2), &texCoords[0], GL_STATIC_DRAW);
+  // enable vertex attribute array associated with vertex attribute texture
+  glEnableVertexAttribArray(attribTexCoord);
+  // bind vertex texture buffer
+  glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+  // how is the buffer data to be interpreted?
   glVertexAttribPointer(attribTexCoord, 2, GL_FLOAT, GL_FALSE, 0,  (GLvoid*) 0);
-  
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);    // for indices
-  // specify buffer data for triangles
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-	       faces.size() * sizeof(uvec3),// how many bytes?  
-	       &faces[0],                        // location of index data
-	       GL_STATIC_DRAW);
 
+  // bind triangle index buffer
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+  
   // unbind vertex array object and end record
-  #ifdef __APPLE__
-  glBindVertexArrayAPPLE(0);
-#else
   glBindVertexArray(0);
-#endif
+}
+
+void TriangleMesh::Segment::draw() {
+  
+  glBindVertexArray(vao);
+  
+  glDrawElements(GL_TRIANGLES, elements.size() * 3, GL_UNSIGNED_INT, (GLvoid*) 0);
+  
+  glBindVertexArray(0);
 }
 
 // called every frame
-void TriangleMesh::draw(void) {
-
-#ifdef __APPLE__
-  glBindVertexArrayAPPLE(vao);
-#else
-  glBindVertexArray(vao);
-#endif
-    
-  glDrawElements(GL_TRIANGLES, faces.size() * 3, GL_UNSIGNED_INT, (GLvoid*) 0); 
+void TriangleMesh::draw(){
   
-#ifdef __APPLE__
-  glBindVertexArrayAPPLE(0);
-#else
-  glBindVertexArray(0);
-#endif
+  vector<Group>::iterator group= begin();
+  while(group != end()){
+    vector<Segment>::iterator segment= group->begin();
+    while(segment != group->end()){
+      segment->draw();
+      segment++;
+    }
+    group++;
+  }
 }
