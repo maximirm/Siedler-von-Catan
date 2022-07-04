@@ -31,6 +31,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Beleg.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

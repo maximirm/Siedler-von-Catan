@@ -77,6 +77,31 @@ public:
     
   };
 
+  class Button {
+      friend class Beleg::Main;
+      
+  private:
+      bool pressed;
+      glm::vec3 position;
+      glm::vec3 size;
+      std::string pressedTexture;
+      std::string defaultTexture;
+      Texture texture;
+      TriangleMesh* mesh;
+
+  public:
+
+      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture);
+      void toggle();
+      void display(glm::mat4 modelMatrix);
+      bool checkPosition(glm::vec2 position2D);
+
+
+  };
+
+
+
+
 public:
   
   class Main : public OpenGLApplication<configMain>{
@@ -148,6 +173,7 @@ public:
     static TriangleMesh streetMesh;
     static TriangleMesh siedlungMesh;
     static TriangleMesh knightMesh;
+    static TriangleMesh quadMesh;
     static glsl::Shader diffuseShader, texturingShader;
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;

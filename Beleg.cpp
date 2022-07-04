@@ -70,6 +70,7 @@ TriangleMesh Beleg::Main::houseMesh;
 TriangleMesh Beleg::Main::streetMesh;
 TriangleMesh Beleg::Main::siedlungMesh;
 TriangleMesh Beleg::Main::knightMesh;
+TriangleMesh Beleg::Main::quadMesh;
 
 //Objects/Islands
 Beleg::Island *Beleg::Main::centerIsland;
@@ -125,6 +126,7 @@ void Beleg::Main::init(){
   streetMesh.load("meshes/Strasse.obj");
   siedlungMesh.load("meshes/Siedlung.obj");
   knightMesh.load("meshes/Ritter.obj");
+  quadMesh.load("meshes/quad.obj");
 
   const std::string version= "#version 120\n";
 
@@ -138,6 +140,7 @@ void Beleg::Main::init(){
   diffuseShader.bindVertexAttrib("position", TriangleMesh::attribPosition);
   diffuseShader.bindVertexAttrib("normal", TriangleMesh::attribNormal);
   diffuseShader.link();
+
 
   texturingShader.loadVertexShader("shaders/texturing.vert");
   texturingShader.compileVertexShader();
@@ -425,12 +428,12 @@ void Beleg::handleKeyboardInput(unsigned int key){
 
 //prototype for dice rolling
 void Beleg::Main::rollDice(Island *dice) {
-    
-    vec3 dicePosition = vec3(2, 1, -1);
+   
 
     //generate random number between 3 and 1
     int diceSide;
     diceSide = rand() % 3 + 1;
+
     switch (diceSide) {
     case 1:
         dice->setTexture("./textures/checker.ppm");
