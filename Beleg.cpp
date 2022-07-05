@@ -399,8 +399,11 @@ void Beleg::Right::display(void){
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float nearPlane=cameraZ/10.0f;
+    float farPlane= cameraZ*10.0f;
     glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
-    glm::mat4 projectionMatrix = glm::ortho(-57, 57, -57, 57 );
+    glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane );
     topRightObject->display(projectionMatrix*viewMatrix);
 
 
