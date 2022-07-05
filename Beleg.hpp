@@ -83,15 +83,16 @@ public:
   private:
       bool pressed;
       glm::vec3 position;
-      glm::vec3 size;
+      glm::vec2 size;
       std::string pressedTexture;
       std::string defaultTexture;
       Texture texture;
       TriangleMesh* mesh;
 
+
   public:
 
-      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture);
+      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture, glm::vec2 size);
       void toggle();
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
@@ -219,6 +220,17 @@ public:
   public:
 
       friend class Beleg::Main;
+      friend class Beleg::Right;
+
+      static LightSource lightSourceRight;
+      static glm::mat4 projectionMatrixRight;
+      static glm::mat4 viewMatrixRight;
+      static glm::mat4 modelMatrixRight;
+      static TriangleMesh buttonMeshRight;
+      static Button* topRightObject;
+      static TriangleMesh *rightWindowCube;
+      static glsl::Shader diffuseShaderRight, texturingShaderRight;
+
 
     // initialization
     static void init();
