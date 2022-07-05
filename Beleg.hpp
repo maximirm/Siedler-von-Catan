@@ -88,7 +88,6 @@ public:
       std::string defaultTexture;
       Texture texture;
       TriangleMesh* mesh;
-      vec2 size;
 
   public:
 
