@@ -19,7 +19,8 @@ void main(void){
   shade= 1.0;
   if(lighting){        
     vec3 lightDirection= normalize(lightPosition.xyz-position.xyz);
-    shade= dot(normal, lightDirection);
+    shade= dot(normal, lightDirection) ;
+	shade = 0.7 * shade + 0.3;
   }
   gl_Position= modelViewProjectionMatrix*position;
 }

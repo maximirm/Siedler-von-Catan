@@ -90,7 +90,8 @@ glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 mat4 Beleg::Left::projectionMatrixLeft, Beleg::Left::viewMatrixLeft, Beleg::Left::modelMatrixLeft(1);
 TriangleMesh Beleg::Left::cubeMeshLeft;
 glsl::Shader Beleg::Left::diffuseShaderLeft, Beleg::Left::texturingShaderLeft;
-Beleg::Island* Beleg::Left::topLeftObject;
+Beleg::Button* Beleg::Left::topLeftObject;
+Texture Beleg::Left::texture;
 LightSource Beleg::Left::lightSourceLeft={
         // position
         glm::vec4(0, 0, 1, 0),
@@ -163,7 +164,7 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Island("./textures/cobblestone.ppm", glm::vec3(2,1, -1), &cubeMesh);
+  dice1 = new Island("./textures/cobblestone.ppm", glm::vec3(2,1, -1), &cubeMesh, false, true);
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -177,7 +178,7 @@ void Beleg::Main::init(){
 void Beleg::Main::reshape(){
     
   // viewport
-  glViewport(0, 0, (GLsizei) window->width(), (GLsizei) window->height());
+  
 
   computeViewMatrix();
   computeProjectionMatrix();
@@ -207,6 +208,7 @@ void Beleg::Main::computeProjectionMatrix(void){
 // this is where the drawing happens
 void Beleg::Main::display(void){
 
+  glViewport(0, 0, (GLsizei)window->width(), (GLsizei)window->height());
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
@@ -278,9 +280,11 @@ void Beleg::display(void){
 
 void Beleg::Left::init(void){
 
+    
 
     const std::string version= "#version 120\n";
-    cubeMeshLeft.load("meshes/quad.off");
+    cubeMeshLeft.load("meshes/quad.obj", false);
+    texture.load("textures/topleftpic.ppm");
 
     diffuseShaderLeft.addVertexShader(version);
     diffuseShaderLeft.loadVertexShader("shaders/diffuse.vert");
@@ -301,14 +305,14 @@ void Beleg::Left::init(void){
     texturingShaderLeft.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
     texturingShaderLeft.link();
 
-    topLeftObject = new Island("./textures/topleftpic.ppm", glm::vec3(-0.5), &cubeMeshLeft, false, true);
+    topLeftObject = new Button(glm::vec3(0), &cubeMeshLeft, &texture, &texture, glm::vec2(1,1));
 
 }
 
 void Beleg::Left::reshape(void){
   
   // Set the viewport to be the entire window
-  glViewport(0, 0, window->width(), window->height());
+  
 
   window->redisplay();
 }
@@ -316,21 +320,13 @@ void Beleg::Left::reshape(void){
 // display texture on full screen quad
 void Beleg::Left::display(void){
 
+  glViewport(0, 0, window->width(), window->height());
   glClearColor(0.3, 0.3, 0.3, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
-    topLeftObject->display(glm::scale(matrix, vec3(3)));
-
-    // ML schnipp
-    diffuseShaderLeft.bind();
-    diffuseShaderLeft.setUniform("transformation", projectionMatrixLeft*viewMatrixLeft*modelMatrixLeft);
-    diffuseShaderLeft.setUniform("color", vec3(1,1,1));
-    diffuseShaderLeft.setUniform("lightPosition", inverse(modelMatrixLeft)*lightSourceLeft.position);
-    //mesh.draw();
-    diffuseShaderLeft.unbind();
-    // ML schnapp
+    
+    topLeftObject->display(glm::mat4(1));
 
     window->swapBuffers();
 
@@ -347,7 +343,7 @@ void Beleg::Right::init(void){
 void Beleg::Right::reshape(void){
   
   // Set the viewport to be the entire window
-  glViewport(0, 0, window->width(), window->height());
+  
 
   window->redisplay();
 }
@@ -355,7 +351,8 @@ void Beleg::Right::reshape(void){
 // display texture on full screen quad
 void Beleg::Right::display(void){
 
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+  glViewport(0, 0, window->width(), window->height());
+  glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     window->swapBuffers();
@@ -397,12 +394,12 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'a':
-      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(3.0f), vec3(0, 1, 0));
+      Main::rotationMatrix = glm::rotate(glm::mat4(1), glm::radians(3.0f), vec3(0, 1, 0)) * Beleg::Main::rotationMatrix;
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
   case 'd':
-      Main::rotationMatrix = glm::rotate(Main::rotationMatrix, glm::radians(-3.0f), vec3(0, 1, 0));
+      Main::rotationMatrix = glm::rotate(glm::mat4(1), glm::radians(-3.0f), vec3(0, 1, 0)) * Beleg::Main::rotationMatrix;
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
@@ -430,19 +427,28 @@ void Beleg::handleKeyboardInput(unsigned int key){
 void Beleg::Main::rollDice(Island *dice) {
    
 
-    //generate random number between 3 and 1
+    //generate random number between 6 and 1
     int diceSide;
-    diceSide = rand() % 3 + 1;
+    diceSide = rand() % 6 + 1;
 
     switch (diceSide) {
     case 1:
-        dice->setTexture("./textures/checker.ppm");
+        dice->setTexture("./textures/wuerfel_1.ppm");
         break;
     case 2:
-        dice->setTexture("./textures/sky.ppm");
+        dice->setTexture("./textures/wuerfel_2.ppm");
         break;
     case 3:
-        dice->setTexture("./textures/grass.ppm");
+        dice->setTexture("./textures/wuerfel_3.ppm");
+        break;
+    case 4:
+        dice->setTexture("./textures/wuerfel_4.ppm");
+        break;
+    case 5:
+        dice->setTexture("./textures/wuerfel_5.ppm");
+        break;
+    case 6:
+        dice->setTexture("./textures/wuerfel_6.ppm");
         break;
     default:
         break;

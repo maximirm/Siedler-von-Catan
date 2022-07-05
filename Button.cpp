@@ -18,7 +18,7 @@ void Beleg::Button::display(glm::mat4 modelMatrix) {
     modelMatrix = glm::translate(modelMatrix, this->position);
     modelMatrix = glm::scale(modelMatrix, glm::vec3(size.x, size.y, 1));
     Main::texturingShader.bind();
-    Main::texturingShader.setUniform("modelViewProjectionMatrix", Main::projectionMatrix * Main::viewMatrix * modelMatrix);
+    Main::texturingShader.setUniform("modelViewProjectionMatrix", modelMatrix);
     Main::texturingShader.setUniform("lighting", false);
     Main::texturingShader.setUniform("texturing", true);
     Main::texturingShader.setUniform("texture", texture.id());
@@ -38,12 +38,9 @@ void Beleg::Button::display(glm::mat4 modelMatrix) {
 void Beleg::Button::toggle() {
     if (this->pressed == true) {
         this->pressed = false;
-  
     }
-    else
-    {
+    else {
         this->pressed = true;
-  
     }
 }
 
