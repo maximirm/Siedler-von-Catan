@@ -84,15 +84,15 @@ public:
       bool pressed;
       glm::vec3 position;
       glm::vec2 size;
-      std::string pressedTexture;
-      std::string defaultTexture;
+      Texture* pressedTexture;
+      Texture* defaultTexture;
       Texture texture;
       TriangleMesh* mesh;
 
 
   public:
 
-      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture, glm::vec2 size);
+      Button(glm::vec3 position, TriangleMesh* meshpointer, Texture* pressedTexture, Texture* defaultTexture, glm::vec2 size);
       void toggle();
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
@@ -230,6 +230,8 @@ public:
       static Button* topRightObject;
       static TriangleMesh *rightWindowCube;
       static glsl::Shader diffuseShaderRight, texturingShaderRight;
+      static Texture pressedTexture;
+      static Texture defaultTexture;
 
 
     // initialization

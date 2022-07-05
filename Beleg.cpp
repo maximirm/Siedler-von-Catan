@@ -107,6 +107,8 @@ mat4 Beleg::Right::projectionMatrixRight, Beleg::Right::viewMatrixRight, Beleg::
 TriangleMesh Beleg::Right::buttonMeshRight;
 glsl::Shader Beleg::Right::diffuseShaderRight, Beleg::Right::texturingShaderRight;
 Beleg::Button* Beleg::Right::topRightObject;
+Texture Beleg::Right::pressedTexture;
+Texture Beleg::Right::defaultTexture;
 LightSource Beleg::Right::lightSourceRight={
         // position
         glm::vec4(0, 0, 1, 0),
@@ -359,6 +361,8 @@ void Beleg::Left::display(void){
 void Beleg::Right::init(void){
 
     buttonMeshRight.load("meshes/quad.obj");
+    pressedTexture.load("textures/checked.ppm");
+    defaultTexture.load("textures/unchecked.ppm");
 
 
     texturingShaderRight.loadVertexShader("shaders/texturing.vert");
@@ -373,7 +377,7 @@ void Beleg::Right::init(void){
     texturingShaderRight.link();
 
     //create the objects
-    topRightObject = new Button(glm::vec3(0,0,0),&buttonMeshRight, "./textures/grass.ppm","./textures/grass.ppm",  glm::vec2(0,0));
+    topRightObject = new Button(glm::vec3(0,0,0),&buttonMeshRight, &pressedTexture, &defaultTexture,  glm::vec2(1,1));
 }
 
 void Beleg::Right::reshape(void){
