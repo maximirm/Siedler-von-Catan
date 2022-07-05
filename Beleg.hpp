@@ -90,6 +90,7 @@ public:
       TriangleMesh* mesh;
       
 
+
   public:
 
       Button(glm::vec3 position, TriangleMesh* meshpointer, Texture* pressedTexture, Texture* defaultTexture, glm::vec2 size);
@@ -221,6 +222,19 @@ public:
   public:
 
       friend class Beleg::Main;
+      friend class Beleg::Right;
+
+      static LightSource lightSourceRight;
+      static glm::mat4 projectionMatrixRight;
+      static glm::mat4 viewMatrixRight;
+      static glm::mat4 modelMatrixRight;
+      static TriangleMesh buttonMeshRight;
+      static Button* topRightObject;
+      static TriangleMesh *rightWindowCube;
+      static glsl::Shader diffuseShaderRight, texturingShaderRight;
+      static Texture pressedTexture;
+      static Texture defaultTexture;
+
 
     // initialization
     static void init();

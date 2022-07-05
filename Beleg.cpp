@@ -103,6 +103,24 @@ LightSource Beleg::Left::lightSourceLeft={
         glm::vec4(1.0, 1.0, 1.0, 1.0),
 };
 
+// Right window
+mat4 Beleg::Right::projectionMatrixRight, Beleg::Right::viewMatrixRight, Beleg::Right::modelMatrixRight(1);
+TriangleMesh Beleg::Right::buttonMeshRight;
+glsl::Shader Beleg::Right::diffuseShaderRight, Beleg::Right::texturingShaderRight;
+Beleg::Button* Beleg::Right::topRightObject;
+Texture Beleg::Right::pressedTexture;
+Texture Beleg::Right::defaultTexture;
+LightSource Beleg::Right::lightSourceRight={
+        // position
+        glm::vec4(0, 0, 1, 0),
+        // ambient color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // diffuse color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // specular color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+};
+
 // ML schnapp
 
 LightSource Beleg::Main::lightSource={
@@ -338,6 +356,30 @@ void Beleg::Left::display(void){
 
 void Beleg::Right::init(void){
 
+    buttonMeshRight.load("meshes/quad.obj");
+    pressedTexture.load("textures/checked.ppm");
+    defaultTexture.load("textures/unchecked.ppm");
+
+
+    texturingShaderRight.loadVertexShader("shaders/texturing.vert");
+    texturingShaderRight.compileVertexShader();
+    texturingShaderRight.loadFragmentShader("shaders/texturing.frag");
+    texturingShaderRight.compileFragmentShader();
+    texturingShaderRight.bindVertexAttrib("position", TriangleMesh::attribPosition);
+    texturingShaderRight.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+    texturingShaderRight.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
+
+
+    texturingShaderRight.link();
+
+    //create the objects
+    topRightObject = new Button(
+            glm::vec3(50,50,0),
+            &buttonMeshRight,
+            &pressedTexture,
+            &defaultTexture,
+            glm::vec2(50,50)
+            );
 }
 
 void Beleg::Right::reshape(void){
@@ -354,6 +396,13 @@ void Beleg::Right::display(void){
   glViewport(0, 0, window->width(), window->height());
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float nearPlane=cameraZ/10.0f;
+    float farPlane= cameraZ*10.0f;
+    glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
+    glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane );
+    topRightObject->display(projectionMatrix*viewMatrix);
+
 
     window->swapBuffers();
 }

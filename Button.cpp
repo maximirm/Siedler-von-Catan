@@ -13,16 +13,16 @@ Beleg::Button::Button(glm::vec3 position, TriangleMesh *meshPointer, Texture* pr
     this->size = size;
 }
 
-void Beleg::Button::display(glm::mat4 modelMatrix) {
+void Beleg::Button::display(glm::mat4 modelViewProjectionMatrix) {
 
-    modelMatrix = glm::translate(modelMatrix, this->position);
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(size.x, size.y, 1));
+    modelViewProjectionMatrix = glm::translate(modelViewProjectionMatrix, this->position);
+    modelViewProjectionMatrix = glm::scale(modelViewProjectionMatrix, glm::vec3(size.x, size.y, 1));
     Main::texturingShader.bind();
-    Main::texturingShader.setUniform("modelViewProjectionMatrix", modelMatrix);
+    Main::texturingShader.setUniform("modelViewProjectionMatrix", modelViewProjectionMatrix);
     Main::texturingShader.setUniform("lighting", false);
     Main::texturingShader.setUniform("texturing", true);
     Main::texturingShader.setUniform("texture", texture.id());
-    Main::texturingShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
+    Main::texturingShader.setUniform("lightPosition", inverse(modelViewProjectionMatrix) * Main::lightSource.position);
     if (pressed) {
         this->pressedTexture->bind();
     }
@@ -41,6 +41,7 @@ void Beleg::Button::toggle() {
     }
     else {
         this->pressed = true;
+  
     }
 }
 

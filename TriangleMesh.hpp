@@ -1,3 +1,4 @@
+
 #pragma once
 
 /* ----------------------------------------------------------------
@@ -9,6 +10,7 @@
                    computer graphics
                    tu berlin
    ------------------------------------------------------------- */
+
 
 #include <string>
 #include <vector>
@@ -25,7 +27,11 @@
 #include "glm/gtc/constants.hpp"
 
 #include "Material.h"
-
+#ifdef __APPLE__
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glDeleteVertexArrays glDeleteVertexArraysAPPLE
+#define glBindVertexArray glBindVertexArrayAPPLE
+#endif
 /*
  * Class for a simple triangle mesh represented as an indexed face set
  */
@@ -145,7 +151,7 @@ public:
     }
 
     void uploadIndexBuffer();
-    void createVAO(unsigned int vbob[]);
+    void createVAO(unsigned int vbo[]);
   };
   
   struct Group{
