@@ -4,13 +4,12 @@
 using namespace glm;
 using namespace std;
 
-Beleg::Button::Button(glm::vec3 position, TriangleMesh *meshPointer, std::string pressedTexture, std::string defaultTexture, glm::vec2 size) {
+Beleg::Button::Button(glm::vec3 position, TriangleMesh *meshPointer, Texture* pressedTexture, Texture* defaultTexture, glm::vec2 size) {
 	this->position = position;
 	this->mesh = meshPointer;
 	this->pressed = false;
     this->pressedTexture = pressedTexture;
     this->defaultTexture = defaultTexture;
-    this->texture.load(this->defaultTexture);
     this->size = size;
 }
 
@@ -24,21 +23,27 @@ void Beleg::Button::display(glm::mat4 modelMatrix) {
     Main::texturingShader.setUniform("texturing", true);
     Main::texturingShader.setUniform("texture", texture.id());
     Main::texturingShader.setUniform("lightPosition", inverse(modelMatrix) * Main::lightSource.position);
-    this->texture.bind();
+    if (pressed) {
+        this->pressedTexture->bind();
+    }
+    else {
+        this->defaultTexture->bind();
+    }
     this->mesh->draw();
-    this->texture.unbind();
+    this->pressedTexture->unbind();
+    this->defaultTexture->unbind();
     Main::texturingShader.unbind();
 }
 
 void Beleg::Button::toggle() {
     if (this->pressed == true) {
         this->pressed = false;
-        this->texture.load(this->defaultTexture);
+  
     }
     else
     {
         this->pressed = true;
-        this->texture.load(this->pressedTexture);
+  
     }
 }
 
