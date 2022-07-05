@@ -394,17 +394,14 @@ void Beleg::Right::display(void){
     glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
+    /*OpenGLConfiguration configRight(config,
+                                    glm::uvec2(167, 0),
+                                    glm::uvec2(114, 114),
+                                    "");
+*/
+    glm::mat4 matrix = glm::ortho(167, 281, 114, 0 );
     topRightObject->display(glm::scale(matrix, vec3(3)));
 
-    // ML schnipp
-    diffuseShaderRight.bind();
-    diffuseShaderRight.setUniform("transformation", projectionMatrixRight*viewMatrixRight*modelMatrixRight);
-    diffuseShaderRight.setUniform("color", vec3(1,1,1));
-    diffuseShaderRight.setUniform("lightPosition", inverse(modelMatrixRight)*lightSourceRight.position);
-    //mesh.draw();
-    diffuseShaderRight.unbind();
     // ML schnapp
 
     window->swapBuffers();
