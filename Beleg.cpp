@@ -377,7 +377,13 @@ void Beleg::Right::init(void){
     texturingShaderRight.link();
 
     //create the objects
-    topRightObject = new Button(glm::vec3(0,0,0),&buttonMeshRight, &pressedTexture, &defaultTexture,  glm::vec2(1,1));
+    topRightObject = new Button(
+            glm::vec3(50,50,0),
+            &buttonMeshRight,
+            &pressedTexture,
+            &defaultTexture,
+            glm::vec2(50,50)
+            );
 }
 
 void Beleg::Right::reshape(void){
@@ -393,16 +399,10 @@ void Beleg::Right::display(void){
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
+    glm::mat4 projectionMatrix = glm::ortho(-57, 57, -57, 57 );
+    topRightObject->display(projectionMatrix*viewMatrix);
 
-    /*OpenGLConfiguration configRight(config,
-                                    glm::uvec2(167, 0),
-                                    glm::uvec2(114, 114),
-                                    "");
-*/
-    glm::mat4 matrix = glm::ortho(167, 281, 114, 0 );
-    topRightObject->display(glm::scale(matrix, vec3(3)));
-
-    // ML schnapp
 
     window->swapBuffers();
 }
