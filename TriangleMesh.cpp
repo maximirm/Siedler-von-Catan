@@ -13,13 +13,9 @@
 // might cause name collisions
 using namespace glm;
 
-#include <string>
 #include <sstream>
 #include <fstream>
-#include <iostream>
-#include <limits>
 
-#include "GLError.hpp"
 
 using namespace std;
 

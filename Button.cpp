@@ -38,19 +38,19 @@ void Beleg::Button::display(glm::mat4 modelMatrix) {
 void Beleg::Button::toggle() {
     if (this->pressed == true) {
         this->pressed = false;
-  
+
     }
     else
     {
         this->pressed = true;
-  
+
     }
 }
 
 bool Beleg::Button::checkPosition(glm::vec2 position2D) {
-    if (position2D.x > position.x - (size.x / 2) && 
-        position2D.x < position.x + (size.x / 2) && 
-        position2D.y > position.y - (size.y / 2) && 
+    if (position2D.x > position.x - (size.x / 2) &&
+        position2D.x < position.x + (size.x / 2) &&
+        position2D.y > position.y - (size.y / 2) &&
         position2D.y < position.y + (size.y / 2)) {
         return true;
     }
@@ -58,5 +58,5 @@ bool Beleg::Button::checkPosition(glm::vec2 position2D) {
     {
         return false;
     }
-    
+
 }

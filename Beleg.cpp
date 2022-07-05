@@ -102,6 +102,22 @@ LightSource Beleg::Left::lightSourceLeft={
         glm::vec4(1.0, 1.0, 1.0, 1.0),
 };
 
+// Right window
+mat4 Beleg::Right::projectionMatrixRight, Beleg::Right::viewMatrixRight, Beleg::Right::modelMatrixRight(1);
+TriangleMesh Beleg::Right::buttonMeshRight;
+glsl::Shader Beleg::Right::diffuseShaderRight, Beleg::Right::texturingShaderRight;
+Beleg::Button* Beleg::Right::topRightObject;
+LightSource Beleg::Right::lightSourceRight={
+        // position
+        glm::vec4(0, 0, 1, 0),
+        // ambient color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // diffuse color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+        // specular color
+        glm::vec4(1.0, 1.0, 1.0, 1.0),
+};
+
 // ML schnapp
 
 LightSource Beleg::Main::lightSource={
@@ -342,6 +358,22 @@ void Beleg::Left::display(void){
 
 void Beleg::Right::init(void){
 
+    buttonMeshRight.load("meshes/quad.obj");
+
+
+    texturingShaderRight.loadVertexShader("shaders/texturing.vert");
+    texturingShaderRight.compileVertexShader();
+    texturingShaderRight.loadFragmentShader("shaders/texturing.frag");
+    texturingShaderRight.compileFragmentShader();
+    texturingShaderRight.bindVertexAttrib("position", TriangleMesh::attribPosition);
+    texturingShaderRight.bindVertexAttrib("normal", TriangleMesh::attribNormal);
+    texturingShaderRight.bindVertexAttrib("texCoord", TriangleMesh::attribTexCoord);
+
+
+    texturingShaderRight.link();
+
+    //create the objects
+    topRightObject = new Button(glm::vec3(0,0,0),&buttonMeshRight, "./textures/grass.ppm","./textures/grass.ppm",  glm::vec2(0,0));
 }
 
 void Beleg::Right::reshape(void){
@@ -357,6 +389,19 @@ void Beleg::Right::display(void){
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+    glm::mat4 matrix = glm::rotate(glm::mat4(1), glm::radians(00.0f), glm::vec3(1,0,0));
+    topRightObject->display(glm::scale(matrix, vec3(3)));
+
+    // ML schnipp
+    diffuseShaderRight.bind();
+    diffuseShaderRight.setUniform("transformation", projectionMatrixRight*viewMatrixRight*modelMatrixRight);
+    diffuseShaderRight.setUniform("color", vec3(1,1,1));
+    diffuseShaderRight.setUniform("lightPosition", inverse(modelMatrixRight)*lightSourceRight.position);
+    //mesh.draw();
+    diffuseShaderRight.unbind();
+    // ML schnapp
 
     window->swapBuffers();
 }

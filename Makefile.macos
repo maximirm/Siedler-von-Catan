@@ -2,7 +2,7 @@ EXECUTABLE = Beleg
 CC = g++
 CPPFLAGS = -std=c++11 -O3 -Iglm/ -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED -I/opt/X11/include
 DEPS = glm/glm.hpp  /glm/gtc/matrix_transform.hpp  /glm/gtc/matrix_inverse.hpp Window.hpp Context.hpp Application.hpp Mouse.hpp Keyboard.hpp Rotations.hpp TriangleMesh.hpp GLSLShader.hpp
-OBJ = GLError.o Config.o Window.o Keyboard.o TriangleMesh.o GLSL.o Texture.o Beleg.o Island.o
+OBJ = GLError.o Config.o Window.o Keyboard.o TriangleMesh.o GLSL.o Texture.o Beleg.o Island.o Button.o
 LDFLAGS = -L/opt/X11/lib
 LIBS= -framework OpenGL -lglew -lglut
 
