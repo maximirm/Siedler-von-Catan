@@ -83,15 +83,16 @@ public:
   private:
       bool pressed;
       glm::vec3 position;
-      glm::vec3 size;
+      glm::vec2 size;
       std::string pressedTexture;
       std::string defaultTexture;
       Texture texture;
       TriangleMesh* mesh;
+      vec2 size;
 
   public:
 
-      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture);
+      Button(glm::vec3 position, TriangleMesh* meshpointer, std::string pressedTexture, std::string defaultTexture, glm::vec2 size);
       void toggle();
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
