@@ -229,7 +229,7 @@ public:
       static glm::mat4 viewMatrixRight;
       static glm::mat4 modelMatrixRight;
       static TriangleMesh buttonMeshRight;
-      static Button* topRightObject;
+      static std::vector <Beleg::Button*>  topRightObjects;
       static TriangleMesh *rightWindowCube;
       static glsl::Shader diffuseShaderRight, texturingShaderRight;
       static Texture pressedTexture;

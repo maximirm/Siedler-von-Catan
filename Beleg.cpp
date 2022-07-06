@@ -107,7 +107,7 @@ LightSource Beleg::Left::lightSourceLeft={
 mat4 Beleg::Right::projectionMatrixRight, Beleg::Right::viewMatrixRight, Beleg::Right::modelMatrixRight(1);
 TriangleMesh Beleg::Right::buttonMeshRight;
 glsl::Shader Beleg::Right::diffuseShaderRight, Beleg::Right::texturingShaderRight;
-Beleg::Button* Beleg::Right::topRightObject;
+std::vector<Beleg::Button*> Beleg::Right::topRightObjects;
 Texture Beleg::Right::pressedTexture;
 Texture Beleg::Right::defaultTexture;
 LightSource Beleg::Right::lightSourceRight={
@@ -373,13 +373,13 @@ void Beleg::Right::init(void){
     texturingShaderRight.link();
 
     //create the objects
-    topRightObject = new Button(
+    topRightObjects.push_back( new Button(
             glm::vec3(50,50,0),
             &buttonMeshRight,
             &pressedTexture,
             &defaultTexture,
             glm::vec2(50,50)
-            );
+            ));
 }
 
 void Beleg::Right::reshape(void){
@@ -401,7 +401,11 @@ void Beleg::Right::display(void){
     float farPlane= cameraZ*10.0f;
     glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
     glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane );
-    topRightObject->display(projectionMatrix*viewMatrix);
+    for (auto i : topRightObjects) {
+        i->display(projectionMatrix * viewMatrix);
+    }
+
+    
 
 
     window->swapBuffers();
