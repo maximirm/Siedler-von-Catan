@@ -97,6 +97,7 @@ public:
       void toggle();
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
+      void setTexture(Texture* texture);
 
 
   };
@@ -132,7 +133,7 @@ public:
     static void specialKey();
 
     //this is where the rolling happens
-    static void rollDice(Island *dice);
+    static void rollDice(Button *dice);
     
     // menu entries
     static std::vector< std::pair< int, std::string > >  menuEntries;
@@ -180,7 +181,13 @@ public:
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;
     static std::vector <Beleg::Island*> decorations;
-    static Island* dice1;
+    static Button* dice1;
+    static Texture diceTexture1;
+    static Texture diceTexture2;
+    static Texture diceTexture3;
+    static Texture diceTexture4;
+    static Texture diceTexture5;
+    static Texture diceTexture6;
    
     
     // ML schnapp

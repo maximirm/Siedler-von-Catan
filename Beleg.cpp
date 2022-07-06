@@ -82,7 +82,15 @@ Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
-Beleg::Island* Beleg::Main::dice1;
+Beleg::Button* Beleg::Main::dice1;
+
+//dice texture
+Texture Beleg::Main::diceTexture1;
+Texture Beleg::Main::diceTexture2;
+Texture Beleg::Main::diceTexture3;
+Texture Beleg::Main::diceTexture4;
+Texture Beleg::Main::diceTexture5;
+Texture Beleg::Main::diceTexture6;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -147,6 +155,15 @@ void Beleg::Main::init(){
   knightMesh.load("meshes/Ritter.obj");
   quadMesh.load("meshes/quad.obj");
 
+  //load all dice texture
+  diceTexture1.load("textures/wuerfel_1.ppm");
+  diceTexture2.load("textures/wuerfel_2.ppm");
+  diceTexture3.load("textures/wuerfel_3.ppm");
+  diceTexture4.load("textures/wuerfel_4.ppm");
+  diceTexture5.load("textures/wuerfel_5.ppm");
+  diceTexture6.load("textures/wuerfel_6.ppm");
+
+
   const std::string version= "#version 120\n";
 
 
@@ -182,7 +199,7 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Island("./textures/cobblestone.ppm", glm::vec3(2,1, -1), &cubeMesh, false, true);
+  dice1 = new Button(glm::vec3(0.8, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.3));
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -477,7 +494,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
 }
 
 //prototype for dice rolling
-void Beleg::Main::rollDice(Island *dice) {
+void Beleg::Main::rollDice(Button *dice) {
    
 
     //generate random number between 6 and 1
@@ -486,22 +503,22 @@ void Beleg::Main::rollDice(Island *dice) {
 
     switch (diceSide) {
     case 1:
-        dice->setTexture("./textures/wuerfel_1.ppm");
+        dice->setTexture(&diceTexture1);
         break;
     case 2:
-        dice->setTexture("./textures/wuerfel_2.ppm");
+        dice->setTexture(&diceTexture2);
         break;
     case 3:
-        dice->setTexture("./textures/wuerfel_3.ppm");
+        dice->setTexture(&diceTexture3);
         break;
     case 4:
-        dice->setTexture("./textures/wuerfel_4.ppm");
+        dice->setTexture(&diceTexture4);
         break;
     case 5:
-        dice->setTexture("./textures/wuerfel_5.ppm");
+        dice->setTexture(&diceTexture5);
         break;
     case 6:
-        dice->setTexture("./textures/wuerfel_6.ppm");
+        dice->setTexture(&diceTexture6);
         break;
     default:
         break;

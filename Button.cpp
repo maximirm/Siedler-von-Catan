@@ -58,3 +58,8 @@ bool Beleg::Button::checkPosition(glm::vec2 position2D) {
     }
     
 }
+
+void Beleg::Button::setTexture(Texture* texture) {
+    this->defaultTexture = texture;
+    this->pressedTexture = texture;
+}
