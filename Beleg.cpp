@@ -82,6 +82,7 @@ Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
+//dice buttons
 Beleg::Button* Beleg::Main::dice1;
 Beleg::Button* Beleg::Main::dice2;
 Beleg::Button* Beleg::Main::dice3;
@@ -96,6 +97,9 @@ Texture Beleg::Main::diceTexture3;
 Texture Beleg::Main::diceTexture4;
 Texture Beleg::Main::diceTexture5;
 Texture Beleg::Main::diceTexture6;
+
+//
+Mouse* Beleg::Main::mainMouse;
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -499,12 +503,25 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'r':
-      Beleg::Main::rollDice(Beleg::Main::dice1);
-      Beleg::Main::rollDice(Beleg::Main::dice2);
-      Beleg::Main::rollDice(Beleg::Main::dice3);
-      Beleg::Main::rollDice(Beleg::Main::dice4);
-      Beleg::Main::rollDice(Beleg::Main::dice5);
-      Beleg::Main::rollDice(Beleg::Main::dice6);
+      if (!Beleg::Main::dice1->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice1);
+      }
+      if (!Beleg::Main::dice2->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice2);
+      }
+      if (!Beleg::Main::dice3->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice3);
+      }
+      if (!Beleg::Main::dice4->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice4);
+      }
+      if (!Beleg::Main::dice5->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice5);
+      }
+      if (!Beleg::Main::dice6->pressed) {
+          Beleg::Main::rollDice(Beleg::Main::dice6);
+      }
+      
       Main::window->redisplay();
       break;
   default:
@@ -584,6 +601,10 @@ void Beleg::Main::menu(int id){
   default:
     break;
   }
+}
+
+void Beleg::Main::mouseClicked(void) {
+
 }
 
 int main(int argc, char** argv){

@@ -81,7 +81,6 @@ public:
       friend class Beleg::Main;
       
   private:
-      bool pressed;
       glm::vec3 position;
       glm::vec2 size;
       Texture* pressedTexture;
@@ -98,6 +97,7 @@ public:
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
       void setTexture(Texture* texture);
+      bool pressed;
 
 
   };
@@ -125,6 +125,8 @@ public:
     
     // called when menu item was selected          
     static void menu(int id);
+
+    static void mouseClicked(void);
     
     // keyboard callback
     static void keyPressed();
@@ -181,6 +183,7 @@ public:
     static Island *centerIsland, *bottomLeftIsland, *bottomRightIsland, *leftIsland, *rightIsland, *topLeftIsland, *topRightIsland;
     static Island* skyBox;
     static std::vector <Beleg::Island*> decorations;
+    //everything dice
     static Button* dice1;
     static Button* dice2;
     static Button* dice3;
@@ -193,6 +196,8 @@ public:
     static Texture diceTexture4;
     static Texture diceTexture5;
     static Texture diceTexture6;
+
+    static Mouse* mainMouse;
    
     
     // ML schnapp
