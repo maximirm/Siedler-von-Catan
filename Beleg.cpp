@@ -83,6 +83,11 @@ Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
 Beleg::Button* Beleg::Main::dice1;
+Beleg::Button* Beleg::Main::dice2;
+Beleg::Button* Beleg::Main::dice3;
+Beleg::Button* Beleg::Main::dice4;
+Beleg::Button* Beleg::Main::dice5;
+Beleg::Button* Beleg::Main::dice6;
 
 //dice texture
 Texture Beleg::Main::diceTexture1;
@@ -199,7 +204,12 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Button(glm::vec3(0.8, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.3));
+  dice1 = new Button(glm::vec3(-0.7, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice2 = new Button(glm::vec3(-0.4, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice3 = new Button(glm::vec3(-0.1, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice4 = new Button(glm::vec3(0.2, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice5 = new Button(glm::vec3(0.5, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice6 = new Button(glm::vec3(0.8, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -256,6 +266,11 @@ void Beleg::Main::display(void){
   rightIsland->display(matrix);
   skyBox->display(glm::scale(matrix, vec3(10)));
   dice1->display(modelMatrix);
+  dice2->display(modelMatrix);
+  dice3->display(modelMatrix);
+  dice4->display(modelMatrix);
+  dice5->display(modelMatrix);
+  dice6->display(modelMatrix);
   for (auto i : decorations) {
       i->display(glm::scale(modelMatrix, vec3(0.2)));
   }
@@ -485,6 +500,11 @@ void Beleg::handleKeyboardInput(unsigned int key){
       break;
   case 'r':
       Beleg::Main::rollDice(Beleg::Main::dice1);
+      Beleg::Main::rollDice(Beleg::Main::dice2);
+      Beleg::Main::rollDice(Beleg::Main::dice3);
+      Beleg::Main::rollDice(Beleg::Main::dice4);
+      Beleg::Main::rollDice(Beleg::Main::dice5);
+      Beleg::Main::rollDice(Beleg::Main::dice6);
       Main::window->redisplay();
       break;
   default:

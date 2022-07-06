@@ -182,6 +182,11 @@ public:
     static Island* skyBox;
     static std::vector <Beleg::Island*> decorations;
     static Button* dice1;
+    static Button* dice2;
+    static Button* dice3;
+    static Button* dice4;
+    static Button* dice5;
+    static Button* dice6;
     static Texture diceTexture1;
     static Texture diceTexture2;
     static Texture diceTexture3;
