@@ -22,6 +22,7 @@
 #include "Texture.hpp"
 #include "LightSource.h"
 #include "GLSL.hpp"
+#include "Input.hpp"
 
 extern OpenGLConfiguration config;
 extern OpenGLConfiguration configLeft;
@@ -48,6 +49,7 @@ public:
   static float cameraX;
   static float cameraY;
 
+  
 
 public:
     class Main;
@@ -102,7 +104,7 @@ public:
 
   };
 
-
+ 
 
 
 public:
@@ -126,7 +128,7 @@ public:
     // called when menu item was selected          
     static void menu(int id);
 
-    static void mouseClicked(void);
+    static void mousePressed();
     
     // keyboard callback
     static void keyPressed();
@@ -139,6 +141,8 @@ public:
     
     // menu entries
     static std::vector< std::pair< int, std::string > >  menuEntries;
+
+    static Mouse* mouse;
     
   private:
     
@@ -197,7 +201,7 @@ public:
     static Texture diceTexture5;
     static Texture diceTexture6;
 
-    static Mouse* mainMouse;
+    
    
     
     // ML schnapp

@@ -98,8 +98,8 @@ Texture Beleg::Main::diceTexture4;
 Texture Beleg::Main::diceTexture5;
 Texture Beleg::Main::diceTexture6;
 
-//
-Mouse* Beleg::Main::mainMouse;
+Mouse* Beleg::Main::mouse;
+
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
 
@@ -208,12 +208,12 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Button(glm::vec3(-0.7, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
-  dice2 = new Button(glm::vec3(-0.4, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
-  dice3 = new Button(glm::vec3(-0.1, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
-  dice4 = new Button(glm::vec3(0.2, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
-  dice5 = new Button(glm::vec3(0.5, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
-  dice6 = new Button(glm::vec3(0.8, 0.8, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(0.2));
+  dice1 = new Button(glm::vec3(20, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice2 = new Button(glm::vec3(35, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice3 = new Button(glm::vec3(50, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice4 = new Button(glm::vec3(65, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice5 = new Button(glm::vec3(80, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice6 = new Button(glm::vec3(95, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -269,12 +269,18 @@ void Beleg::Main::display(void){
   leftIsland->display(matrix);
   rightIsland->display(matrix);
   skyBox->display(glm::scale(matrix, vec3(10)));
-  dice1->display(modelMatrix);
-  dice2->display(modelMatrix);
-  dice3->display(modelMatrix);
-  dice4->display(modelMatrix);
-  dice5->display(modelMatrix);
-  dice6->display(modelMatrix);
+
+  float nearPlane = cameraZ / 10.0f;
+  float farPlane = cameraZ * 10.0f;
+  glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0, 0, 1) * scaling, vec3(0), vec3(0, 1, 0));
+  glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane);
+
+  dice1->display(projectionMatrix * viewMatrix);
+  dice2->display(projectionMatrix * viewMatrix);
+  dice3->display(projectionMatrix * viewMatrix);
+  dice4->display(projectionMatrix * viewMatrix);
+  dice5->display(projectionMatrix * viewMatrix);
+  dice6->display(projectionMatrix * viewMatrix);
   for (auto i : decorations) {
       i->display(glm::scale(modelMatrix, vec3(0.2)));
   }
@@ -603,8 +609,12 @@ void Beleg::Main::menu(int id){
   }
 }
 
-void Beleg::Main::mouseClicked(void) {
+void Beleg::Main::mousePressed() {
+    vec2 mousePosition = glm::vec2(0) +(glm::vec2)mouse->position;
 
+    if (dice1->checkPosition(mousePosition)) {
+        dice1->toggle();
+    }
 }
 
 int main(int argc, char** argv){
