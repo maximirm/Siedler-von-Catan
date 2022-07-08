@@ -99,6 +99,7 @@ Texture Beleg::Main::diceTexture5;
 Texture Beleg::Main::diceTexture6;
 
 Mouse* Beleg::Main::mouse;
+Mouse* Beleg::Right::mouse;
 
 
 glsl::Shader Beleg::Main::diffuseShader, Beleg::Main::texturingShader;
@@ -442,7 +443,7 @@ void Beleg::Right::display(void){
     float nearPlane=cameraZ/10.0f;
     float farPlane= cameraZ*10.0f;
     glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
-    glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane );
+    glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 114.0f, 0.0f, nearPlane, farPlane );
     for (auto i : topRightObjects) {
         i->display(projectionMatrix * viewMatrix);
     }
@@ -629,6 +630,15 @@ void Beleg::Main::mousePressed() {
     }
     if (dice6->checkPosition(mousePosition)) {
         dice6->toggle();
+    }
+}
+
+void Beleg::Right::mousePressed() {
+    for (auto checkBox : topRightObjects) {
+        if (checkBox->checkPosition(mouse->position)) {
+            checkBox->toggle();
+            Right::window->redisplay();
+        }
     }
 }
 

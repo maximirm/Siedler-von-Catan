@@ -255,6 +255,7 @@ public:
       static glsl::Shader diffuseShaderRight, texturingShaderRight;
       static Texture pressedTexture;
       static Texture defaultTexture;
+      static Mouse* moouse;
 
 
     // initialization
@@ -268,6 +269,8 @@ public:
     
     // keyboard callback
     static void keyPressed();
+
+    static void mousePressed();
   };
 
   private:
