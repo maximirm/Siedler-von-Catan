@@ -208,12 +208,12 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
   
   skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Button(glm::vec3(20, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
-  dice2 = new Button(glm::vec3(35, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
-  dice3 = new Button(glm::vec3(50, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
-  dice4 = new Button(glm::vec3(65, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
-  dice5 = new Button(glm::vec3(80, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
-  dice6 = new Button(glm::vec3(95, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(10, 10));
+  dice1 = new Button(glm::vec3(20, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice2 = new Button(glm::vec3(60, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice3 = new Button(glm::vec3(100, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice4 = new Button(glm::vec3(140, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice5 = new Button(glm::vec3(180, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice6 = new Button(glm::vec3(220, 100, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
 
   //decorate the island with vector of objects
   decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
@@ -273,7 +273,7 @@ void Beleg::Main::display(void){
   float nearPlane = cameraZ / 10.0f;
   float farPlane = cameraZ * 10.0f;
   glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0, 0, 1) * scaling, vec3(0), vec3(0, 1, 0));
-  glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 0.0f, 114.0f, nearPlane, farPlane);
+  glm::mat4 projectionMatrix = glm::ortho(0.0f, 281.0f, 0.0f, 281.0f, nearPlane, farPlane);
 
   dice1->display(projectionMatrix * viewMatrix);
   dice2->display(projectionMatrix * viewMatrix);
