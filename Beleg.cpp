@@ -610,7 +610,7 @@ void Beleg::Main::menu(int id){
 }
 
 void Beleg::Main::mousePressed() {
-    vec2 mousePosition = glm::vec2(0) +(glm::vec2)mouse->position;
+    vec2 mousePosition = mouse->position;
 
     if (dice1->checkPosition(mousePosition)) {
         dice1->toggle();
