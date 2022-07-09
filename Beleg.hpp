@@ -255,7 +255,7 @@ public:
       static glsl::Shader diffuseShaderRight, texturingShaderRight;
       static Texture pressedTexture;
       static Texture defaultTexture;
-      static Mouse* moouse;
+      static Mouse* mouse;
 
 
     // initialization
