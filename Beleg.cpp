@@ -314,7 +314,7 @@ void Beleg::Main::display(void){
   float nearPlane = cameraZ / 10.0f;
   float farPlane = cameraZ * 10.0f;
   glm::mat4 viewMatrix = glm::lookAt(glm::vec3(0, 0, 1) * scaling, vec3(0), vec3(0, 1, 0));
-  glm::mat4 projectionMatrix = glm::ortho(0.0f, 281.0f, 281.0f, 0.0f, nearPlane, farPlane);
+  glm::mat4 projectionMatrix = glm::ortho(0.0f, 562.0f, 562.0f, 0.0f, nearPlane, farPlane);
 
   dice1->display(projectionMatrix * viewMatrix);
   dice2->display(projectionMatrix * viewMatrix);
@@ -483,7 +483,7 @@ void Beleg::Right::display(void){
     float nearPlane=cameraZ/10.0f;
     float farPlane= cameraZ*10.0f;
     glm::mat4 viewMatrix= glm::lookAt(glm::vec3(0,0,1) * scaling, vec3(0), vec3(0,1,0));
-    glm::mat4 projectionMatrix = glm::ortho(0.0f, 114.0f, 114.0f, 0.0f, nearPlane, farPlane );
+    glm::mat4 projectionMatrix = glm::ortho(0.0f, 228.0f, 228.0f, 0.0f, nearPlane, farPlane );
     for (auto i : topRightObjects) {
         i->display(projectionMatrix * viewMatrix);
     }
