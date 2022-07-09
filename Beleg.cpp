@@ -33,22 +33,22 @@ using namespace std;
 			    OpenGLConfiguration::Profile::COMPATIBILITY,
 			    (Window::DOUBLE | Window::DEPTH | Window::RGB | Window::MULTISAMPLE),
 			    8,
-			    glm::uvec2(50, 50),
-			    glm::uvec2(281, 395),
+			    glm::uvec2(100, 100),
+			    glm::uvec2(562, 790),
 			    "Computer Graphics - Beleg");
 
  OpenGLConfiguration configLeft(config,
 				glm::uvec2(0, 0),
-				glm::uvec2(167, 114),
+				glm::uvec2(334, 228),
 				"");
 
 OpenGLConfiguration configRight(config,
-				glm::uvec2(167, 0),
-				glm::uvec2(114, 114),
+				glm::uvec2(334, 0),
+				glm::uvec2(228, 228),
 				"");
 OpenGLConfiguration configMain(config,
-			       glm::uvec2(0, 114),
-			       glm::uvec2(281, 281),
+			       glm::uvec2(0, 228),
+			       glm::uvec2(562, 562),
 			       "");
 
 
@@ -323,7 +323,7 @@ void Beleg::Main::display(void){
   dice5->display(projectionMatrix * viewMatrix);
   dice6->display(projectionMatrix * viewMatrix);
   for (auto i : decorations) {
-      i->display(glm::scale(modelMatrix, vec3(0.2)));
+      i->display(glm::scale(modelMatrix, vec3(0.3)));
   }
   
 
