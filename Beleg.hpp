@@ -179,7 +179,10 @@ public:
     static TriangleMesh cubeMesh;
     static TriangleMesh rectangleMesh;
     static TriangleMesh houseMesh;
-    static TriangleMesh streetMesh;
+    static TriangleMesh startMesh;
+    static TriangleMesh streetMesh1;
+    static TriangleMesh streetMesh2;
+    static TriangleMesh streetMesh3;
     static TriangleMesh siedlungMesh;
     static TriangleMesh knightMesh;
     static TriangleMesh quadMesh;

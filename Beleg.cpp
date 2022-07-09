@@ -67,7 +67,10 @@ mat4 Beleg::Main::rotationMatrix = glm::mat4(1);
 TriangleMesh Beleg::Main::islandMesh;
 TriangleMesh Beleg::Main::cubeMesh;
 TriangleMesh Beleg::Main::houseMesh;
-TriangleMesh Beleg::Main::streetMesh;
+TriangleMesh Beleg::Main::startMesh;
+TriangleMesh Beleg::Main::streetMesh1;
+TriangleMesh Beleg::Main::streetMesh2;
+TriangleMesh Beleg::Main::streetMesh3;
 TriangleMesh Beleg::Main::siedlungMesh;
 TriangleMesh Beleg::Main::knightMesh;
 TriangleMesh Beleg::Main::quadMesh;
@@ -157,10 +160,13 @@ void Beleg::Main::init(){
   // ML schnipp
     //load ze meshes
   islandMesh.setWinding(TriangleMesh::CW);
-  islandMesh.load("meshes/platform.obj");
+  islandMesh.load("meshes/Plattform.obj");
   cubeMesh.load("meshes/cube.obj");
   houseMesh.load("meshes/Haus.obj");
-  streetMesh.load("meshes/Strasse.obj");
+  startMesh.load("meshes/Start.obj");
+  streetMesh1.load("meshes/Strasse1.obj");
+  streetMesh2.load("meshes/Strasse2.obj");
+  streetMesh3.load("meshes/Strasse3.obj");
   siedlungMesh.load("meshes/Siedlung.obj");
   knightMesh.load("meshes/Ritter.obj");
   quadMesh.load("meshes/quad.obj");
@@ -200,15 +206,15 @@ void Beleg::Main::init(){
   texturingShader.link();
 
   //create the objects
-  centerIsland = new Island("./textures/grass.ppm", glm::vec3(0, 0, 0), &islandMesh);
-  bottomLeftIsland = new Island("./textures/checker.ppm", glm::vec3(-1.2, 0, -0.7), &islandMesh);
-  bottomRightIsland = new Island("textures/earthcyl2.ppm", glm::vec3(-1.2, 0, 0.7), &islandMesh);
-  topLeftIsland = new Island("./textures/earthcyl2.ppm", glm::vec3(1.2, 0, -0.7), &islandMesh);
-  topRightIsland = new Island("./textures/sand.ppm", glm::vec3(1.2, 0, 0.7), &islandMesh);
-  rightIsland = new Island("./textures/cobblestone.ppm", glm::vec3(0, 0, 1.4), &islandMesh);
-  leftIsland = new Island("./textures/sand.ppm", glm::vec3(0, 0, -1.4), &islandMesh);
-  
-  skyBox = new Island("./textures/sky.ppm", glm::vec3(0), &cubeMesh, false);
+  centerIsland = new Island("./textures/mitte.ppm", glm::vec3(0, 0, 0), &islandMesh);
+  bottomLeftIsland = new Island("./textures/wald.ppm", glm::vec3(-0.85, 0, 1.5), &islandMesh);
+  bottomRightIsland = new Island("textures/lehm.ppm", glm::vec3(0.85, 0, 1.5), &islandMesh);
+  topLeftIsland = new Island("./textures/getreide.ppm", glm::vec3(-0.85, 0, -1.5), &islandMesh);
+  topRightIsland = new Island("./textures/erz.ppm", glm::vec3(0.85, 0, -1.5), &islandMesh);
+  rightIsland = new Island("./textures/wuste.ppm", glm::vec3(1.7, 0, 0), &islandMesh);
+  leftIsland = new Island("./textures/wiese.ppm", glm::vec3(-1.7, 0, 0), &islandMesh);  
+
+  skyBox = new Island("./textures/box.ppm", glm::vec3(0), &cubeMesh, false);
   dice1 = new Button(glm::vec3(40, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
   dice2 = new Button(glm::vec3(80, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
   dice3 = new Button(glm::vec3(120, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
@@ -217,10 +223,44 @@ void Beleg::Main::init(){
   dice6 = new Button(glm::vec3(240, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
 
   //decorate the island with vector of objects
-  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(1, 1.7, 1), &houseMesh));
-  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(2, 1.7, 2), &siedlungMesh));
-  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(-1, 1.7, 2), &knightMesh));
-  decorations.push_back(new Island("./textures/checker.ppm", glm::vec3(-1, 1.6, -2), &streetMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0.5, 1.4, 0), &knightMesh));  
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-0.5, 1.4, 0), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-2.975, 1.4, -5.25), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(2.975, 1.4, -5.25), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-2.975, 1.4, 5.25), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(2.975, 1.4, 5.25), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-5.5, 1.4, 0), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(5, 1.4, 0), &knightMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(6, 1.4, 0), &knightMesh));
+
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(4, 0.7, -2.25), &startMesh));  
+  
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0, 0.7, -5), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0, 0.7, 5), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-5.5, 0.7, 5), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-5.5, 0.7, -5), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(5.5, 0.7, 5), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(8.25, 0.7, 0), &streetMesh1));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-8.25, 0.7, 0), &streetMesh1));
+
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-1.5, 0.7, -2.25), &streetMesh2));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-7, 0.7, -2.25), &streetMesh2));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-1.5, 0.7, 7.25), &streetMesh2));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(4, 0.7, 7.25), &streetMesh2));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(7, 0.7, 2.25), &streetMesh2));
+
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(1.5, 0.7, -2.25), &streetMesh3));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-4, 0.7, -2.25), &streetMesh3));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(1.5, 0.7, 7.25), &streetMesh3));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-4, 0.7, 7.25), &streetMesh3));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-7, 0.7, 2.25), &streetMesh3));
+
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0, 1, -6.25), &siedlungMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-5.5, 1, -6.25), &siedlungMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0, 1, 6.25), &siedlungMesh));
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-5.5, 1, 6.25), &siedlungMesh));
+
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(2.5, 1, -1.5), &houseMesh));
   //ML schnapp
 }
 
@@ -269,7 +309,7 @@ void Beleg::Main::display(void){
   topRightIsland->display(matrix);
   leftIsland->display(matrix);
   rightIsland->display(matrix);
-  skyBox->display(glm::scale(matrix, vec3(10)));
+  skyBox->display(glm::scale(matrix, vec3(20)));
 
   float nearPlane = cameraZ / 10.0f;
   float farPlane = cameraZ * 10.0f;
