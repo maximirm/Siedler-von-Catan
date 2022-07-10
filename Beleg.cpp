@@ -573,12 +573,16 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'i':
-      scaling = scaling * 0.9;
+      if (scaling > 0.3) {
+          scaling = scaling * 0.9;
+      }
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
   case 'k':
-      scaling = scaling * 1.1;
+      if (scaling < 1.9) {
+          scaling = scaling * 1.1;
+      }
       Main::computeViewMatrix();
       Main::window->redisplay();
       break;
