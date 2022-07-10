@@ -456,13 +456,22 @@ void Beleg::Right::init(void){
     texturingShaderRight.link();
 
     //create the objects
-    topRightObjects.push_back( new Button(
-            glm::vec3(50,50,0),
-            &buttonMeshRight,
-            &pressedTexture,
-            &defaultTexture,
-            glm::vec2(50,50)
-            ));
+    //top row
+    topRightObjects.push_back(new Button(glm::vec3(30, 150,0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(70, 150, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(110, 150, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(150, 150, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(190, 150, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    //bottom row
+    topRightObjects.push_back(new Button(glm::vec3(30, 200, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(70, 200, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(110, 200, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(150, 200, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(190, 200, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    //top right
+    topRightObjects.push_back(new Button(glm::vec3(190, 100, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(190, 50, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+
 }
 
 void Beleg::Right::reshape(void){
