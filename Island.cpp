@@ -32,6 +32,6 @@ void Beleg::Island::display(glm::mat4 modelMatrix) {
 
 }
 
-void Beleg::Island::setTexture(std::string texture) {
-    this->texture.load(texture);
+void Beleg::Island::setTexture(Texture* texture) {
+    this->texture = *texture;
 }

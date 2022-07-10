@@ -84,6 +84,8 @@ Beleg::Island* Beleg::Main::topLeftIsland;
 Beleg::Island* Beleg::Main::topRightIsland;
 Beleg::Island* Beleg::Main::rightIsland;
 Beleg::Island* Beleg::Main::skyBox;
+Beleg::Island* Beleg::Main::selectedDeco;
+int Beleg::Main::decoCounter;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
 //dice buttons
 Beleg::Button* Beleg::Main::dice1;
@@ -280,6 +282,9 @@ void Beleg::Main::init(){
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(2.75, 0.85, 8), &houseMesh));
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-2.75, 0.85, 8), &houseMesh));
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(5.5, 0.85, 3.5), &houseMesh));
+
+  decoCounter = 0;
+  selectedDeco = decorations[decoCounter];
   //ML schnapp
 }
 
@@ -596,9 +601,21 @@ void Beleg::handleKeyboardInput(unsigned int key){
       if (!Beleg::Main::dice6->pressed) {
           Beleg::Main::rollDice(Beleg::Main::dice6);
       }
-      
       Main::window->redisplay();
       break;
+  case 'u':
+      if(Beleg::Main::decoCounter <= Beleg::Main::decorations.size())
+      Main::decoCounter += 1;
+      Main::setSelectedDecoration();
+      break;
+  case 'j':
+      if (Main::decoCounter >= 0) {
+          Main::decoCounter -= 1;
+          Main::setSelectedDecoration();
+      }
+      break;
+  case 'g':
+      Main::markSelectedDecoration();
   default:
     break;
 
@@ -636,6 +653,14 @@ void Beleg::Main::rollDice(Button *dice) {
         break;
     }
 
+}
+
+void Beleg::Main::setSelectedDecoration() {
+    Beleg::Main::selectedDeco = Beleg::Main::decorations[decoCounter];
+}
+
+void Beleg::Main::markSelectedDecoration() {
+    Beleg::Main::selectedDeco->setTexture(&diceTexture1);
 }
 
 // keyboard callback for special keys

@@ -74,7 +74,7 @@ public:
   public:
     Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool lighting=true, bool texturing = true);
     void display(glm::mat4 modelMatrix);
-    void setTexture(std::string texture);
+    void setTexture(Texture* texture);
     
     
   };
@@ -138,6 +138,10 @@ public:
 
     //this is where the rolling happens
     static void rollDice(Button *dice);
+
+    static void setSelectedDecoration();
+
+    static void markSelectedDecoration();
     
     // menu entries
     static std::vector< std::pair< int, std::string > >  menuEntries;
@@ -209,6 +213,8 @@ public:
     static Texture dicePressedTexture4;
     static Texture dicePressedTexture5;
     static Texture dicePressedTexture6;
+    static Island* selectedDeco;
+    static int decoCounter;
 
     
    
