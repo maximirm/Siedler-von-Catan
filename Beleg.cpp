@@ -227,12 +227,12 @@ void Beleg::Main::init(){
   leftIsland = new Island("./textures/wiese.ppm", glm::vec3(-1.7, 0, 0), &islandMesh);  
 
   skyBox = new Island("./textures/box.ppm", glm::vec3(0), &cubeMesh, false);
-  dice1 = new Button(glm::vec3(40, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
-  dice2 = new Button(glm::vec3(80, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
-  dice3 = new Button(glm::vec3(120, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
-  dice4 = new Button(glm::vec3(160, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
-  dice5 = new Button(glm::vec3(200, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
-  dice6 = new Button(glm::vec3(240, 40, 0), &quadMesh, &diceTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice1 = new Button(glm::vec3(40, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice2 = new Button(glm::vec3(80, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice3 = new Button(glm::vec3(120, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice4 = new Button(glm::vec3(160, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice5 = new Button(glm::vec3(200, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
+  dice6 = new Button(glm::vec3(240, 40, 0), &quadMesh, &dicePressedTexture1, &diceTexture1, glm::vec2(25, 25));
 
   //decorate the island with vector of objects
   
