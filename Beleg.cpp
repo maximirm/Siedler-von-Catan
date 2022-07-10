@@ -238,7 +238,7 @@ void Beleg::Main::init(){
 
   //decorate the island with vector of objects
   
-  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0.5, 1.4, 0), &knightMesh));  
+  decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(0.5, 1.4, 0), &knightMesh, false));  
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-0.5, 1.4, 0), &knightMesh));
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(-2.975, 1.4, -5.25), &knightMesh));
   decorations.push_back(new Island("./textures/holz.ppm", glm::vec3(2.975, 1.4, -5.25), &knightMesh));
@@ -624,6 +624,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
       break;
   case 'g':
       Main::markSelectedDecoration();
+      Main::window->redisplay();
   default:
     break;
 
@@ -664,7 +665,9 @@ void Beleg::Main::rollDice(Button *dice) {
 }
 
 void Beleg::Main::setSelectedDecoration() {
+    Beleg::Main::selectedDeco->changeLighting();
     Beleg::Main::selectedDeco = Beleg::Main::decorations[decoCounter];
+    Beleg::Main::selectedDeco->changeLighting();
 }
 
 void Beleg::Main::markSelectedDecoration() {

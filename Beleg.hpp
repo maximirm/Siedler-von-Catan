@@ -75,6 +75,7 @@ public:
     Island(std::string texture, glm::vec3 position, TriangleMesh *meshPointer, bool lighting=true, bool texturing = true);
     void display(glm::mat4 modelMatrix);
     void setTexture(Texture* texture);
+    void changeLighting();
     
     
   };

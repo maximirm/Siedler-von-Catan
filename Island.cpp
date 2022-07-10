@@ -35,3 +35,12 @@ void Beleg::Island::display(glm::mat4 modelMatrix) {
 void Beleg::Island::setTexture(Texture* texture) {
     this->texture = *texture;
 }
+
+void Beleg::Island::changeLighting() {
+    if (this->lighting) {
+        this->lighting = false;
+    }
+    else {
+        this->lighting = true;
+    }
+}
