@@ -608,7 +608,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
       Main::window->redisplay();
       break;
   case 'u':
-      if (Beleg::Main::decoCounter < Beleg::Main::decorations.size()) {
+      if (Beleg::Main::decoCounter < Beleg::Main::decorations.size() -1) {
           Main::decoCounter += 1;
           Main::setSelectedDecoration();
           Main::window->redisplay();
@@ -625,6 +625,7 @@ void Beleg::handleKeyboardInput(unsigned int key){
   case 'g':
       Main::markSelectedDecoration();
       Main::window->redisplay();
+      break;
   default:
     break;
 
