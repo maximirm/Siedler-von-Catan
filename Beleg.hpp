@@ -98,7 +98,7 @@ public:
       void toggle();
       void display(glm::mat4 modelMatrix);
       bool checkPosition(glm::vec2 position2D);
-      void setTexture(Texture* texture);
+      void setTexture(Texture* pressedTexture, Texture* defaultTexture);
       bool pressed;
 
 
@@ -203,6 +203,12 @@ public:
     static Texture diceTexture4;
     static Texture diceTexture5;
     static Texture diceTexture6;
+    static Texture dicePressedTexture1;
+    static Texture dicePressedTexture2;
+    static Texture dicePressedTexture3;
+    static Texture dicePressedTexture4;
+    static Texture dicePressedTexture5;
+    static Texture dicePressedTexture6;
 
     
    

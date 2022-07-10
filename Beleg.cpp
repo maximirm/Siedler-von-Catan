@@ -100,6 +100,12 @@ Texture Beleg::Main::diceTexture3;
 Texture Beleg::Main::diceTexture4;
 Texture Beleg::Main::diceTexture5;
 Texture Beleg::Main::diceTexture6;
+Texture Beleg::Main::dicePressedTexture1;
+Texture Beleg::Main::dicePressedTexture2;
+Texture Beleg::Main::dicePressedTexture3;
+Texture Beleg::Main::dicePressedTexture4;
+Texture Beleg::Main::dicePressedTexture5;
+Texture Beleg::Main::dicePressedTexture6;
 
 Mouse* Beleg::Main::mouse;
 Mouse* Beleg::Right::mouse;
@@ -178,6 +184,12 @@ void Beleg::Main::init(){
   diceTexture4.load("textures/wuerfel_4.ppm");
   diceTexture5.load("textures/wuerfel_5.ppm");
   diceTexture6.load("textures/wuerfel_6.ppm");
+  dicePressedTexture1.load("textures/w1.ppm");
+  dicePressedTexture2.load("textures/w2.ppm");
+  dicePressedTexture3.load("textures/w3.ppm");
+  dicePressedTexture4.load("textures/w4.ppm");
+  dicePressedTexture5.load("textures/w5.ppm");
+  dicePressedTexture6.load("textures/w6.ppm");
 
 
   const std::string version= "#version 120\n";
@@ -603,22 +615,22 @@ void Beleg::Main::rollDice(Button *dice) {
 
     switch (diceSide) {
     case 1:
-        dice->setTexture(&diceTexture1);
+        dice->setTexture(&dicePressedTexture1 ,&diceTexture1);
         break;
     case 2:
-        dice->setTexture(&diceTexture2);
+        dice->setTexture(&dicePressedTexture2, &diceTexture2);
         break;
     case 3:
-        dice->setTexture(&diceTexture3);
+        dice->setTexture(&dicePressedTexture3, &diceTexture3);
         break;
     case 4:
-        dice->setTexture(&diceTexture4);
+        dice->setTexture(&dicePressedTexture4,&diceTexture4);
         break;
     case 5:
-        dice->setTexture(&diceTexture5);
+        dice->setTexture(&dicePressedTexture5,&diceTexture5);
         break;
     case 6:
-        dice->setTexture(&diceTexture6);
+        dice->setTexture(&dicePressedTexture6, &diceTexture6);
         break;
     default:
         break;
@@ -671,21 +683,27 @@ void Beleg::Main::mousePressed() {
 
     if (dice1->checkPosition(mousePosition)) {
         dice1->toggle();
+        Main::window->redisplay();
     }
     if (dice2->checkPosition(mousePosition)) {
         dice2->toggle();
+        Main::window->redisplay();
     }
     if (dice3->checkPosition(mousePosition)) {
         dice3->toggle();
+        Main::window->redisplay();
     }
     if (dice4->checkPosition(mousePosition)) {
         dice4->toggle();
+        Main::window->redisplay();
     }
     if (dice5->checkPosition(mousePosition)) {
         dice5->toggle();
+        Main::window->redisplay();
     }
     if (dice6->checkPosition(mousePosition)) {
         dice6->toggle();
+        Main::window->redisplay();
     }
 }
 
