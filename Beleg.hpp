@@ -271,6 +271,8 @@ public:
       static glsl::Shader diffuseShaderRight, texturingShaderRight;
       static Texture pressedTexture;
       static Texture defaultTexture;
+      static Texture schrift1Texture;
+      static Texture schrift2Texture;
       static Mouse* mouse;
 
 
