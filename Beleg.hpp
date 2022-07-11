@@ -216,7 +216,7 @@ public:
     static Texture dicePressedTexture6;
     static Island* selectedDeco;
     static int decoCounter;
-
+    static Texture rotTexture;
     
    
     

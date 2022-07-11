@@ -87,6 +87,7 @@ Beleg::Island* Beleg::Main::skyBox;
 Beleg::Island* Beleg::Main::selectedDeco;
 int Beleg::Main::decoCounter;
 std::vector<Beleg::Island*> Beleg::Main::decorations;
+Texture Beleg::Main::rotTexture;
 //dice buttons
 Beleg::Button* Beleg::Main::dice1;
 Beleg::Button* Beleg::Main::dice2;
@@ -192,6 +193,7 @@ void Beleg::Main::init(){
   dicePressedTexture4.load("textures/w4.ppm");
   dicePressedTexture5.load("textures/w5.ppm");
   dicePressedTexture6.load("textures/w6.ppm");
+  rotTexture.load("textures/rot.ppm");
 
 
   const std::string version= "#version 120\n";
@@ -672,7 +674,7 @@ void Beleg::Main::setSelectedDecoration() {
 }
 
 void Beleg::Main::markSelectedDecoration() {
-    Beleg::Main::selectedDeco->setTexture(&diceTexture1);
+    Beleg::Main::selectedDeco->setTexture(&rotTexture);
 }
 
 // keyboard callback for special keys
