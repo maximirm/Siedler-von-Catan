@@ -140,6 +140,8 @@ glsl::Shader Beleg::Right::diffuseShaderRight, Beleg::Right::texturingShaderRigh
 std::vector<Beleg::Button*> Beleg::Right::topRightObjects;
 Texture Beleg::Right::pressedTexture;
 Texture Beleg::Right::defaultTexture;
+Texture Beleg::Right::schrift1Texture;
+Texture Beleg::Right::schrift2Texture;
 LightSource Beleg::Right::lightSourceRight={
         // position
         glm::vec4(0, 0, 1, 0),
@@ -468,7 +470,8 @@ void Beleg::Right::init(void){
     buttonMeshRight.load("meshes/quad.obj");
     pressedTexture.load("textures/checked.ppm");
     defaultTexture.load("textures/unchecked.ppm");
-
+    schrift1Texture.load("textures/schrift1.ppm");
+    schrift2Texture.load("textures/schrift2.ppm");
 
     texturingShaderRight.loadVertexShader("shaders/texturing.vert");
     texturingShaderRight.compileVertexShader();
@@ -497,6 +500,8 @@ void Beleg::Right::init(void){
     //top right
     topRightObjects.push_back(new Button(glm::vec3(190, 100, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
     topRightObjects.push_back(new Button(glm::vec3(190, 50, 0), &buttonMeshRight, &pressedTexture, &defaultTexture, glm::vec2(20, 20)));
+    topRightObjects.push_back(new Button(glm::vec3(100, 100, 0), &buttonMeshRight, &schrift1Texture, &schrift1Texture, glm::vec2(120, 30)));
+    topRightObjects.push_back(new Button(glm::vec3(100, 50, 0), &buttonMeshRight, &schrift2Texture, &schrift2Texture, glm::vec2(120, 30)));
 
 }
 
